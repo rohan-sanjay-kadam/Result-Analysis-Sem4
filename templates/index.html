@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block style%}
+  <style>
+    body{
+    bgcolor:#09145a
+    }
+    .input {
+      margin-left: 20px;
+      display: block;
+    }
+
+    .center {
+      margin-left: 71px;
+    }
+
+    .file-upload-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 445px;
+      margin-left: 25px;
+      background-color: #dee6de;
+      /* color: white; */
+      padding: 10px 20px;
+      border-style: solid;
+      border-color: rgba(0, 0, 0, 0.29);
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .file-upload-wrapper input[type="file"] {
+<!--      position: absolute;-->
+<!--      top: 0;-->
+<!--      left: 0;-->
+      width: 100%;
+      height: 100%;
+<!--      opacity: 0;-->
+      /* Hide the default file input */
+      cursor: pointer;
+    }
+
+    .file-upload-text {
+      font-size: 16px;
+    }
+
+    /* Hover effect */
+    .file-upload-wrapper:hover {
+      background-color: #45a049;
+    }
+  </style>
+{% endblock %}
+{% block body%}
+
+
+      <div class="modal modal-sheet position-static d-block bg-body-light p-4 py-md-5" tabindex="-1" role="dialog" id="modalSheet">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content rounded-2 shadow">
+            <div class="modal-header border-bottom-0 center">
+              <h1 class="modal-title fs-2 ml-3">Covert Your Excel Files</h1>
+            </div>
+            <div class="modal-body py-2 center">
+              <p>Upload your excel file in the correct format and download your converted file.</p>
+            </div>
+
+
+            <!-- <div class=>
+                <span class="input">Upload Excel File</span>
+                <input class="input" type="file">
+            </div> -->
+              <form method="POST" action="{{url_for('convert_excel')}}" enctype="multipart/form-data">
+            <div class="file-upload-wrapper">
+<!--                <span class="file-upload-text">Choose File</span>-->
+                <input type="file" name="file" id="fileInput" accept="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"/>
+            </div>
+
+            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
+              <button type="submit" class="btn btn-lg btn-success">Convert File</button>
+              <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Download Converted File</button>
+            </div>
+              </form>
+          </div>
+        </div>
+      </div>
+
+    <script>
+        if ({{semester}}==5 || {{semester}}==6 || {{semester}}==7 || {{semester}}==8 ){
+            const parent = document.querySelector(".file-upload-wrapper")
+            const input = document.createElement("input")
+            input.setAttribute("type", "file")
+            input.setAttribute("name", "file2")
+            input.setAttribute("accept", "'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'")
+            parent.appendChild(input)
+        }
+        if({{semester}}==7 || {{semester}}==8 ){
+            const parent = document.querySelector(".file-upload-wrapper")
+            const input = document.createElement("input")
+            input.setAttribute("type", "file")
+            input.setAttribute("name", "file3")
+            input.setAttribute("accept", "'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'")
+            parent.appendChild(input)
+        }
+    </script>
+{% endblock %}

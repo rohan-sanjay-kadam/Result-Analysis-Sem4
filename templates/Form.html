@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+{% block style%}
+ <style>
+      body {
+        background-color: rgba(241, 239, 236, 0.666);
+      }
+      .main {
+        margin-top: 5rem;
+        margin-left: 18rem;
+        background-color: rgba(248, 248, 248, 0.752);
+        width: 60%;
+        border: 1px solid white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        padding-left: 2rem;
+      }
+      .year-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+        margin-bottom: 2rem;
+      }
+      .subjects-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem 3rem;
+        margin-bottom: 2rem;
+      }
+      .div-container {
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+      }
+      .division {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4rem;
+        padding-bottom: 2rem;
+      }
+      .div-header {
+        display: flex;
+        gap: 12rem;
+      }
+      input {
+        width: 15rem; /* Input takes 80% of parent width */
+        height: 33px; /* Fixed height */
+      }
+      button {
+        width: 7rem;
+        margin-left: 80%;
+      }
+      select {
+        width: 15rem; /* or 64px */
+        height: 33px;
+      }
+      label{
+        display: block;
+      }
+    </style>
+{% endblock %}
+{% block body%}
+     <form method="POST" action="{{url_for('index')}}">
+      <div class="main">
+        <h1>Academic Details</h1>
+        <div class="year-container">
+          <!-- <select aria-label="Small select example">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option> -->
+          <div class="year">
+            <label for="year">Year</label>
+            <input type="text" placeholder="Enter year" name="year" id="year" required />
+          </div>
+          <div class="semester">
+             <label for="semester">Semester</label>
+            <select name="semester" id="semester">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+          </div>
+          <div class="branch">
+            <label for="branch">Branch</label>
+            <select name="branch" id="branch">
+              <option value="CE">CE</option>
+              <option value="IOT">IOT</option>
+              <option value="IT">IT</option>
+              <option value="AIDS">AIDS</option>
+              <option value="AIML">AIML</option>
+              <option value="EXTC">EXTC</option>
+              <option value="ECS">ECS</option>
+              <option value="ME">ME</option>
+            </select>
+          </div>
+          <div class="divisionCount">
+            <label for="divisionCount">No. of divisons</label>
+            <select name="divisionCount" id="divisionCount">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>
+        <h3>Subjects</h3>
+        <div class="subjects-container">
+          <div class="subject1">
+            <div>Subject 1</div>
+            <input
+              type="text"
+              placeholder="Enter subject 1"
+              name="Subject-1"
+              required
+            />
+          </div>
+          <div class="subject2">
+            <div>Subject 2</div>
+            <input
+              type="text"
+              placeholder="Enter subject 2"
+              name="Subject-2"
+              required
+            />
+          </div>
+          <div class="subject3">
+            <div>Subject 3</div>
+            <input
+              type="text"
+              placeholder="Enter subject 3"
+              name="Subject-3"
+
+            />
+          </div>
+          <div class="subject4">
+            <div>Subject 4</div>
+            <input
+              type="text"
+              placeholder="Enter subject 4"
+              name="Subject-4"
+
+            />
+          </div>
+          <div class="subject5">
+            <div>Subject 5</div>
+            <!--        required hata diya cus form fir submit nhi hora tha when DLO is there-->
+            <input type="text" placeholder="Enter subject 5" name="Subject-5" />
+          </div>
+          <div class="DLO1" style="display: none;">
+            <label for="DLO-1">DLO 1 Subject</label>
+            <input type="text" id="DLO-1" name="DLO-1" placeholder="Enter DLO Subject 1">
+          </div>
+          <div class="DLO2" style="display: none;">
+            <label for="DLO-2">DLO 2 Subject</label>
+            <input type="text" id="DLO-2" name="DLO-2" placeholder="Enter DLO Subject 2">
+          </div>
+          <div class="DLO3" style="display: none;">
+            <label for="DLO-3">DLO 3 Subject</label>
+            <input type="text" id="DLO-3" name="DLO-3" placeholder="Enter DLO Subject 3">
+          </div>
+          <div class="DLO4" style="display: none;">
+            <label for="DLO-4">DLO 4 Subject</label>
+            <input type="text" id="DLO-4" name="DLO-4" placeholder="Enter DLO Subject 4">
+          </div>
+          <div class="DLO5" style="display: none;">
+            <label for="DLO-5">DLO 5 Subject</label>
+            <input type="text" id="DLO-5" name="DLO-5" placeholder="Enter DLO Subject 5">
+          </div>
+          <div class="DLO6" style="display: none;">
+            <label for="DLO-6">DLO 6 Subject</label>
+            <input type="text" id="DLO-6" name="DLO-6" placeholder="Enter DLO Subject 6">
+          </div>
+          <div class="ILO1" style="display: none;">
+            <label for="ILO-1">ILO 1 Subject</label>
+            <input type="text" name="ILO-1" id="ILO-1" placeholder="Enter ILO 1 Subject">
+          </div>
+          <div class="ILO2" style="display: none;">
+            <label for="ILO-2">ILO 2 Subject</label>
+            <input type="text" name="ILO-2" id="ILO-2" placeholder="Enter ILO 2 Subject">
+          </div>
+          <div class="ILO3" style="display: none;">
+            <label for="ILO-3">ILO 3 Subject</label>
+            <input type="text" name="ILO-3" id="ILO-3" placeholder="Enter ILO 3 Subject">
+          </div>
+          <div class="ILO4" style="display: none;">
+          <label for="ILO-4">ILO 4 Subject</label>
+            <input type="text" name="ILO-4" id="ILO-4" placeholder="Enter ILO 4 Subject">
+          </div>
+        </div>
+        <div class="division">
+          <div class="div-container">
+            <h3>Division 1 Teachers</h3>
+            <div class="PRN">
+              <input
+                type="text"
+                placeholder="DIV1 start"
+                name="DIV1-PRN-start"
+                required
+              />
+              <br>
+              <input
+                type="text"
+                placeholder="DIV1 end"
+                name="DIV1-PRN-end"
+                required
+              />
+            </div>
+            <div class="teacher1">
+              <div>Teacher 1</div>
+              <input
+                type="text"
+                placeholder="Enter Teacher 1 name"
+                name="Subject-1-teacher-div1"
+                required
+              />
+            </div>
+            <div class="teacher2">
+              <div>Teacher 2</div>
+              <input
+                type="text"
+                placeholder="Enter Teacher 2 name"
+                name="Subject-2-teacher-div1"
+                required
+              />
+            </div>
+            <div class="teacher3">
+              <div>Teacher 3</div>
+              <input
+                type="text"
+                placeholder="Enter Teacher 3 name"
+                name="Subject-3-teacher-div1"
+                required
+              />
+            </div>
+            <div class="teacher4">
+              <div>Teacher 4</div>
+              <input
+                type="text"
+                placeholder="Enter Teacher 4 name"
+                name="Subject-4-teacher-div1"
+                required
+              />
+            </div>
+            <div class="teacher5">
+              <div>Teacher 5</div>
+              <!--        iska bhi required hata dia same reason-->
+              <input
+                type="text"
+                placeholder="Enter Teacher 5 name"
+                name="Subject-5-teacher-div1"
+              />
+            </div>
+          </div>
+        </div>
+        <input type="submit" />
+      </div>
+    </form>
+  <script>
+document.getElementById("semester").addEventListener("change", updateTeacherForm);
+document.getElementById("divisionCount").addEventListener("change", updateTeacherForm);
+
+function updateTeacherForm() {
+    const semester = parseInt(document.getElementById("semester").value)
+    const divisions = parseInt(document.getElementById("divisionCount").value)
+    const container = document.querySelector(".division")
+    // const subContainer  = document.querySelector(".subjects-container") new element create nhi karra so not using this
+    container.innerHTML = ""  // Clear old
+
+    const withDLO = (semester === 5 || semester === 6)
+    const withILO = (semester === 7 || semester === 8)
+    // const coreSubjectCount = withDLO ? 4 : 5
+    let coreSubjectCount;
+    let dloCount;
+    if(withDLO){
+        coreSubjectCount=4
+        dloCount=3
+    }
+    else if(withILO){
+        coreSubjectCount=2
+        dloCount=6
+    }
+    else{
+        coreSubjectCount=5
+        dloCount=0
+    }
+    const iloCount = withILO ? 4 : 0
+    for (let DLO = 1; DLO <= 6; DLO++) {
+        const DLOinput = document.querySelector(`.DLO${DLO}`)
+        DLOinput.style.display = "none";
+
+    }
+     for (let ILO = 1; ILO <= 4; ILO++) {
+        const ILOinput = document.querySelector(`.ILO${ILO}`)
+        ILOinput.style.display = "none";
+
+    }
+    document.querySelector(".subject5").style.display = withDLO || withILO ? "none" : "block";
+    document.querySelector(".subject3").style.display = withILO ? "none" : "block";
+    document.querySelector(".subject4").style.display = withILO ? "none" : "block";
+
+    for (let d = 1; d <= divisions; d++) {
+        const divContainer = document.createElement("div")
+        divContainer.className = `div-container`
+        const header = document.createElement("h3")
+        header.innerText = `Division ${d} Teachers`
+        divContainer.appendChild(header)
+        const prnDiv = document.createElement("div")
+        prnDiv.innerHTML = `
+            <input type="text" placeholder="DIV${d} start" name="DIV${d}-PRN-start"> <br>
+            <input type="text" placeholder="DIV${d} end" name="DIV${d}-PRN-end">
+        `
+        divContainer.appendChild(prnDiv)
+
+        // Core Teachers
+        for (let t = 1; t <= coreSubjectCount; t++) {
+            const label = document.createElement("label")
+            label.innerText = `Teacher ${t}`
+            const input = document.createElement("input")
+            input.type = "text"
+            input.setAttribute("required","")
+            input.name = `Subject-${t}-teacher-div${d}`
+            input.placeholder = `Enter Teacher ${t} name`
+            divContainer.appendChild(label)
+            divContainer.appendChild(input)
+        }
+
+        // DLO Teachers
+        for (let dlo = 1; dlo <= dloCount; dlo++) {
+            const label = document.createElement("label")
+            label.innerText = `DLO Teacher ${dlo}`
+            const input = document.createElement("input")
+            input.type = "text"
+            input.setAttribute("required","")
+            input.name = `DLO-${dlo}-teacher-div${d}`
+            input.placeholder = `Enter DLO Teacher ${dlo} name`
+            divContainer.appendChild(label)
+            divContainer.appendChild(input)
+        }
+
+        //ILO Teachers
+        if(withILO){
+            for (let ilo = 1; ilo <= iloCount; ilo++) {
+                const label = document.createElement("label")
+                label.innerText = `ILO Teacher ${ilo}`
+                const input = document.createElement("input")
+                input.type = "text"
+                input.setAttribute("required","")
+                input.name = `ILO-${ilo}-teacher-div${d}`
+                input.placeholder = `Enter ILO Teacher ${ilo} name`
+                divContainer.appendChild(label)
+                divContainer.appendChild(input)
+            }
+        }
+
+
+        container.appendChild(divContainer)
+    }
+
+    // DLO Subjects (only once)
+    if (withDLO || withILO) {
+        for (let dlo = 1; dlo <= dloCount; dlo++) {
+            const DLOinput = document.querySelector(`.DLO${dlo}`)
+            DLOinput.style.display = "block";
+        }
+    }
+    if (withILO) {
+        for (let ilo = 1; ilo <= iloCount; ilo++) {
+            const ILOinput = document.querySelector(`.ILO${ilo}`)
+            ILOinput.style.display = "block";
+        }
+    }
+
+}
+  </script>
+{% endblock %}

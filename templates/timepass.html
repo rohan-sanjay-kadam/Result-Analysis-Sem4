@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block style%}
+  <style>
+    body{
+      background-color: rgba(241, 239, 236, 0.666);
+    }
+    .main{
+      margin-top: 5rem;
+      margin-left: 18rem;
+      background-color: rgba(248, 248, 248, 0.752);
+      width: 60%;
+      border: 1px solid white;
+      box-shadow:  0 5px 15px rgba(0, 0, 0, 0.2);
+      padding-left: 2rem;
+    }
+    .year-container{
+      display: flex;
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+    .subjects-container{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem 3rem;
+      margin-bottom: 2rem;
+    }
+    .div-1-container{
+      display: flex;
+      gap: 1rem;
+      flex-direction: column;
+    }
+    .div-2-container{
+      display: flex;
+      gap: 1rem;
+      flex-direction: column;
+    }
+    .division{
+      display: flex;
+      gap: 12rem;
+      padding-bottom: 2rem;
+    }
+    .div-header{
+      display: flex;
+      gap: 18rem;
+    }
+    input {
+      width: 15rem;    /* Input takes 80% of parent width */
+      height: 33px;  /* Fixed height */
+    }
+    button{
+      width: 7rem;
+      margin-left: 80%;
+    }
+  </style>
+{% endblock %}
+{% block body%}
+    <form method='POST' action="{{url_for('index')}}">
+     <div class="main">
+    <h1>Academic Details</h1>
+    <div class="year-container">
+      <!-- <select aria-label="Small select example">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option> -->
+        <div class="year">
+        <div>Year</div>
+        <input type="text" placeholder="Enter year" name="year" required>
+        </div>
+        <div class="semester">
+          <div>Semester</div>
+          <input type="text" placeholder="Enter semester" name="semester" required>
+        </div>
+        <div class="branch">
+          <div>Branch</div>
+          <input type="text" placeholder="Enter branch" name="branch" required>
+        </div>
+    </div>
+    <h3>Subjects</h3>
+    <div class="subjects-container">
+
+      <div class="subject1">
+        <div>Subject 1</div>
+        <input type="text" placeholder="Enter subject 1" name="Subject-1" required>
+      </div>
+      <div class="subject2">
+        <div>Subject 2</div>
+        <input type="text" placeholder="Enter subject 2" name="Subject-2" required>
+      </div>
+      <div class="subject3">
+        <div>Subject 3</div>
+        <input type="text" placeholder="Enter subject 3" name="Subject-3" required>
+      </div>
+      <div class="subject4">
+        <div>Subject 4</div>
+        <input type="text" placeholder="Enter subject 4" name="Subject-4" required>
+      </div>
+      <div class="subject5">
+        <div>Subject 5</div>
+        <input type="text" placeholder="Enter subject 5" name="Subject-5" required>
+      </div>
+    </div>
+    <div class="div-header">
+      <div>
+    <h3>Division 1 Teachers</h3>
+  </div>
+  <div>
+    <h3>Division 2 Teachers</h3>
+  </div>
+  </div>
+  <div class="division">
+
+    <div class="div-1-container">
+      <div class="teacher1">
+        <div>Teacher 1</div>
+        <input type="text" placeholder="Enter Teacher 1 name" name="Subject-1-teacher-div1" required>
+      </div>
+      <div class="teacher2">
+        <div>Teacher 2</div>
+        <input type="text" placeholder="Enter Teacher 2 name" name="Subject-2-teacher-div1" required>
+      </div>
+      <div class="teacher3">
+        <div>Teacher 3</div>
+        <input type="text" placeholder="Enter Teacher 3 name" name="Subject-3-teacher-div1" required>
+      </div>
+      <div class="teacher4">
+        <div>Teacher 4</div>
+        <input type="text" placeholder="Enter Teacher 4 name" name="Subject-4-teacher-div1" required>
+      </div>
+      <div class="teacher5">
+        <div>Teacher 5</div>
+        <input type="text" placeholder="Enter Teacher 5 name" name="Subject-5-teacher-div1" required>
+      </div>
+    </div>
+
+
+    <div class="div-2-container">
+      <div class="teacher1">
+        <div>Teacher 1</div>
+        <input type="text" placeholder="Enter Teacher 1 name" name="Subject-1-teacher-div2" required>
+      </div>
+      <div class="teacher2">
+        <div>Teacher 2</div>
+        <input type="text" placeholder="Enter Teacher 2 name" name="Subject-2-teacher-div2" required>
+      </div>
+      <div class="teacher3">
+        <div>Teacher 3</div>
+        <input type="text" placeholder="Enter Teacher 3 name" name="Subject-3-teacher-div2" required>
+      </div>
+      <div class="teacher4">
+        <div>Teacher 4</div>
+        <input type="text" placeholder="Enter Teacher 4 name" name="Subject-4-teacher-div2" required>
+      </div>
+      <div class="teacher5">
+        <div>Teacher 5</div>
+        <input type="text" placeholder="Enter Teacher 5 name" name="Subject-5-teacher-div2" required>
+      </div>
+    </div>
+  </div>
+<!--  <button type="submit">Next</button>-->
+         <input type="submit">
+  </div>
+        </form>
+{% endblock %}
