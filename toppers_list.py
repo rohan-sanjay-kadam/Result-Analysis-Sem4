@@ -1,6 +1,12 @@
 import pandas as pd
 def list_all(df):
     df.columns = df.columns.str.strip().str.upper()
+    df['EXAMTOTAL'] = (
+        df['EXAMTOTAL']
+        .astype(str)  # ensure string
+        .str.extract(r'(\d+)$')  # extract last digits
+        .astype(float)  # convert to numeric
+    )
     df['EXAMTOTAL'] = pd.to_numeric(df['EXAMTOTAL'], errors='coerce')
     sorted_df=df.sort_values(by=['EXAMTOTAL'],ascending=False)
     sorted_df=sorted_df.head(3)

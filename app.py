@@ -4,17 +4,17 @@
 # Text generation ka logic wapis sheet name manual diya hai
 # Form mai saare input ke div ko label karna hai
 
-
-import builtins
-
-_original_print = builtins.print
-
-def selective_print(*args, **kwargs):
-    # Allow printing only if the message contains a keyword
-    if any("DEBUG-GRADEREPORT" in str(a) for a in args):
-        _original_print(*args, **kwargs)
-
-builtins.print = selective_print
+#This code ignores all the print statements and shows only print with a specific keyword
+# import builtins
+#
+# _original_print = builtins.print
+#
+# def selective_print(*args, **kwargs):
+#     # Allow printing only if the message contains a keyword
+#     if any("DEBUG-GRADEREPORT" in str(a) for a in args):
+#         _original_print(*args, **kwargs)
+#
+# builtins.print = selective_print
 
 
 
@@ -114,11 +114,34 @@ def index():
         branch=request.form['branch']
         no_of_divisions = int(request.form.get("divisionCount"))
 
-        prn_start = {}
-        prn_end = {}
-        for i in range(1,no_of_divisions+1):
-            prn_start[f"div{i}_prn_start"] = request.form.get(f'DIV{i}-PRN-start')
-            prn_end[f"div{i}_prn_end"] = request.form.get(f'DIV{i}-PRN-end')
+        if 'divisions_prn' not in session:
+            session['divisions_prn'] = []
+
+        divisions_data = []
+
+        for i in range(1, no_of_divisions + 1):
+            # Get each uploaded Excel file
+            file = request.files.get(f"DIV{i}-PRN")
+            if file is None or file.filename == "":
+                return f"Error: Missing PRN file for Division {i}", 400
+            print(request.files.get(f"DIV{i}-PRN"))
+            # if not file:
+            #     continue
+
+            # Read and clean PRN list from the file
+            df_prn = pd.read_excel(file)
+            df_prn.columns = df_prn.columns.str.strip().str.upper()
+            prn_list = df_prn['ROLLNO'].astype(str).str.strip().tolist()
+
+            divisions_data.append({
+                "division_name": f"DIV{i}",
+                "prns": prn_list
+            })
+
+        # Save once to session
+        session['divisions_prn'] = divisions_data
+        session.modified = True
+
         # div1_prn_end = request.form.get('DIV1-PRN-end')
         # div2_prn_start = request.form.get('DIV2-PRN-start')
         # div2_prn_end = request.form.get('DIV2-PRN-end')
@@ -179,9 +202,6 @@ def index():
         for i in range(1,no_of_divisions+1):
             session[f'teachers_div{i}'] = teachers[f"teachers_div{i}"]
         session['subjects'] = subjects
-        for i in range(1,no_of_divisions+1):
-            session[f'div{i}_prn_start'] = prn_start[f"div{i}_prn_start"]
-            session[f'div{i}_prn_end'] = prn_end[f"div{i}_prn_end"]
         session['year']=year
         session['semester'] = semester
         session['branch'] = branch
@@ -227,12 +247,14 @@ def convert_excel():
     # div2_prn_end = session.get('div2_prn_end')
     no_of_divisions = session.get('no_of_divisions')
 
-    prn_start = {}
-    prn_end={}
+    # This will store PRN's of every division
+    prns={}
     for i in range(1, no_of_divisions + 1):
-        prn_start[f"div{i}_prn_start"] = session.get(f"div{i}_prn_start")
-        prn_end[f"div{i}_prn_end"] = session.get(f"div{i}_prn_end")
-    
+        # Converting list to set (ideal for big data)
+        prns[f"DIV{i}-prn"] = set(session['divisions_prn'][i-1]["prns"]) # used set cause its faster than list set: O(1) and list: O(n)
+    print("no_of_divisions =", no_of_divisions)
+    print("session list length =", len(session['divisions_prn']))
+
     if request.method == 'POST' and 'file' in request.files and (semester == 5 or semester == 6):
         print("Inside If")
         department = session.get('branch')
@@ -259,9 +281,9 @@ def convert_excel():
         result_dictionary = {}
         for i in range(1, no_of_divisions + 1):
             # main table dataframe of first sheet
-            final_dataframes_dictionary[f"new{i}_df"] = c_div_DLO.c_div_DLO_analysis(df, i, DLO1_df, DLO2_df, DLO3_df, prn_start[f"div{i}_prn_start"],prn_end[f"div{i}_prn_end"])
+            final_dataframes_dictionary[f"new{i}_df"] = c_div_DLO.c_div_DLO_analysis(df, i, DLO1_df, DLO2_df, DLO3_df, prns[f"DIV{i}-prn"])
             # kt dataframe of first sheet
-            kt_df_dictionary[f"kt_div{i}_df"], appeared_div_dictionary[f"appeared_div{i}"], pass_div_dictionary[f"pass_div{i}"] = count_kt_d.kt_analysis_d(df, prn_start[f"div{i}_prn_start"],prn_end[f"div{i}_prn_end"])
+            kt_df_dictionary[f"kt_div{i}_df"], appeared_div_dictionary[f"appeared_div{i}"], pass_div_dictionary[f"pass_div{i}"] = count_kt_d.kt_analysis_d(df, prns[f"DIV{i}-prn"])
             # result of all divisions
             result_dictionary[f"result_div{i}"] = round(pass_div_dictionary[f"pass_div{i}"] / appeared_div_dictionary[f"appeared_div{i}"] * 100, 2)
 
@@ -434,9 +456,9 @@ def convert_excel():
         result_dictionary = {}
         for i in range(1, no_of_divisions + 1):
             # main table dataframe of first sheet
-            final_dataframes_dictionary[f"new{i}_df"] = ILO_analysis.ILO_analysis(df, i, DLO1_df, DLO2_df, DLO3_df,DLO4_df,DLO5_df,DLO6_df, ILO1_df,ILO2_df,ILO3_df,ILO4_df,prn_start[f"div{i}_prn_start"],prn_end[f"div{i}_prn_end"])
+            final_dataframes_dictionary[f"new{i}_df"] = ILO_analysis.ILO_analysis(df, i, DLO1_df, DLO2_df, DLO3_df,DLO4_df,DLO5_df,DLO6_df, ILO1_df,ILO2_df,ILO3_df,ILO4_df,prns[f"DIV{i}-prn"])
             # kt dataframe of first sheet
-            kt_df_dictionary[f"kt_div{i}_df"], appeared_div_dictionary[f"appeared_div{i}"], pass_div_dictionary[f"pass_div{i}"] = count_kt_d.kt_analysis_d(df, prn_start[f"div{i}_prn_start"],prn_end[f"div{i}_prn_end"])
+            kt_df_dictionary[f"kt_div{i}_df"], appeared_div_dictionary[f"appeared_div{i}"], pass_div_dictionary[f"pass_div{i}"] = count_kt_d.kt_analysis_d(df, prns[f"DIV{i}-prn"])
             # result of all divisions
             result_dictionary[f"result_div{i}"] = round(pass_div_dictionary[f"pass_div{i}"] / appeared_div_dictionary[f"appeared_div{i}"] * 100, 2)
 
@@ -595,11 +617,11 @@ def convert_excel():
         department = session.get('branch')
         year=session.get('year')
         subjects = session.get('subjects', [])
-        subject_1 = subjects[0]
-        subject_2 = subjects[1]
-        subject_3 = subjects[2]
-        subject_4 = subjects[3]
-        subject_5 = subjects[4]
+        subject_1 = subjects[0]['subject']
+        subject_2 = subjects[1]['subject']
+        subject_3 = subjects[2]['subject']
+        subject_4 = subjects[3]['subject']
+        subject_5 = subjects[4]['subject']
         file = request.files['file']
         df = pd.read_excel(file)
 
@@ -610,9 +632,9 @@ def convert_excel():
         result_dictionary = {}
         for i in range(1,no_of_divisions+1):
             #main table dataframe of first sheet
-            final_dataframes_dictionary[f"new{i}_df"] = c_div.c_div_analysis(df,i,prn_start[f"div{i}_prn_start"], prn_end[f"div{i}_prn_end"])
+            final_dataframes_dictionary[f"new{i}_df"] = c_div.c_div_analysis(df,i,prns[f"DIV{i}-prn"])
             #kt dataframe of first sheet
-            kt_df_dictionary[f"kt_div{i}_df"],appeared_div_dictionary[f"appeared_div{i}"],pass_div_dictionary[f"pass_div{i}"] = count_kt_d.kt_analysis_d(df,prn_start[f"div{i}_prn_start"], prn_end[f"div{i}_prn_end"])
+            kt_df_dictionary[f"kt_div{i}_df"],appeared_div_dictionary[f"appeared_div{i}"],pass_div_dictionary[f"pass_div{i}"] = count_kt_d.kt_analysis_d(df,prns[f"DIV{i}-prn"])
             #result of all divisions
             result_dictionary[f"result_div{i}"]=round(pass_div_dictionary[f"pass_div{i}"]/appeared_div_dictionary[f"appeared_div{i}"]*100,2)
 

@@ -6,7 +6,7 @@ from analyze_DLO_grade import analyze_DLO_grade
 
 routes_c = Blueprint("c_div", __name__)
 
-def c_div_analysis(df,n,prn_start,prn_end):
+def c_div_analysis(df,n,prn_set):
     new_df = pd.DataFrame(columns=['E-P','D','C-O','TOTAL PASS','FAILED','No.of students appeared','% OF RESULT'])
     teachers_div1 = session.get(f'teachers_div{n}') #change teachers_div1 to teachers if working
     subjects = session.get('subjects')
@@ -24,7 +24,7 @@ def c_div_analysis(df,n,prn_start,prn_end):
     df.columns = df.columns.str.strip().str.upper()
     df['EXAM2'] = df['EXAM2'].apply(str)
 
-    df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'] <= prn_end) & (df['ROLLNO'] >= prn_start)]
+    df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'].isin(prn_set))]
 
     # D division condition
     # df['exam2'] = df['exam2'].apply(str)

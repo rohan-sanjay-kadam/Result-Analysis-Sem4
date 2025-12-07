@@ -58,7 +58,7 @@
     </style>
 {% endblock %}
 {% block body%}
-     <form method="POST" action="{{url_for('index')}}">
+     <form method="POST" action="{{url_for('index')}}" enctype="multipart/form-data">
       <div class="main">
         <h1>Academic Details</h1>
         <div class="year-container">
@@ -196,16 +196,9 @@
             <h3>Division 1 Teachers</h3>
             <div class="PRN">
               <input
-                type="text"
-                placeholder="DIV1 start"
-                name="DIV1-PRN-start"
-                required
-              />
-              <br>
-              <input
-                type="text"
-                placeholder="DIV1 end"
-                name="DIV1-PRN-end"
+                type="file"
+                placeholder="DIV1 PRN"
+                name="DIV1-PRN"
                 required
               />
             </div>
@@ -310,8 +303,7 @@ function updateTeacherForm() {
         divContainer.appendChild(header)
         const prnDiv = document.createElement("div")
         prnDiv.innerHTML = `
-            <input type="text" placeholder="DIV${d} start" name="DIV${d}-PRN-start"> <br>
-            <input type="text" placeholder="DIV${d} end" name="DIV${d}-PRN-end">
+            <input type="file" placeholder="DIV${d} PRN" name="DIV${d}-PRN" accept="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'" required>
         `
         divContainer.appendChild(prnDiv)
 

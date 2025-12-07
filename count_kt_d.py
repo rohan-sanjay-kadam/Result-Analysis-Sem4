@@ -1,11 +1,11 @@
 import pandas as pd
-def kt_analysis_d(df,prn_start,prn_end):
+def kt_analysis_d(df,prn_set):
     df.columns = df.columns.str.strip().str.upper()
     # print(df.columns.tolist())
     df['EXAM2'] = df['EXAM2'].apply(str)
     df['ROLLNO'] = df['ROLLNO'].astype(str).str.strip()
     # df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'] > '122A1070')] #for sem3 dyanamic karna hai PRN
-    df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'] >= prn_start) & (df['ROLLNO'] <= prn_end)]
+    df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'].isin(prn_set))]
 
     # No_of_students_appeared_div2=df[(df['Remark'] != 'NULL') & (df['Remark'] != 'ABS') ].shape[0]
     No_of_students_appeared_div2=df[df['REMARK'].notna()].shape[0]

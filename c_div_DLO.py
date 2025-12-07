@@ -6,7 +6,7 @@ from analyze_grade import analyze_grade
 routes_c_DLO = Blueprint("c_div_DLO", __name__)
 
 
-def c_div_DLO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,prn_start,prn_end):
+def c_div_DLO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,prn_set):
     new_df = pd.DataFrame(columns=['E-P', 'D', 'C-O', 'TOTAL PASS', 'FAILED', 'No.of students appeared', '% OF RESULT'])
     teachers_div1 = session.get(f'teachers_div{n}')
     subjects = session.get('subjects')
@@ -33,13 +33,13 @@ def c_div_DLO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,prn_start,prn_end):
     DLO3_df = clean_columns(DLO3_df)
 
 
-    df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'] <= prn_end) & (df['ROLLNO'] >= prn_start)]
+    df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'].isin(prn_set))]
     if not DLO1_df.empty:
-        DLO1_df = DLO1_df[(DLO1_df['ROLLNO'] <= prn_end) & (DLO1_df['ROLLNO'] >= prn_start)]  # PRN dynamic karna hai
+        DLO1_df = DLO1_df[(DLO1_df['ROLLNO'].isin(prn_set))] # PRN dynamic karna hai
     if not DLO2_df.empty:
-        DLO2_df = DLO2_df[(DLO2_df['ROLLNO'] <= prn_end) & (DLO2_df['ROLLNO'] >= prn_start)]
+        DLO2_df = DLO2_df[(DLO2_df['ROLLNO'].isin(prn_set))]
     if not DLO3_df.empty:
-        DLO3_df = DLO3_df[(DLO3_df['ROLLNO'] <= prn_end) & (DLO3_df['ROLLNO'] >= prn_start)]
+        DLO3_df = DLO3_df[(DLO3_df['ROLLNO'].isin(prn_set))]
 
     # if semester == 5 or semester == 6:  #IG we dont need this kyuki yeh function tabhi call hoga jab sem 5 or 6 hoga so blueprints bhi hata dena
     teacher1_DLO_name = teachers_div1[5]['name']
