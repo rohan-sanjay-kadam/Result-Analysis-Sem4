@@ -14,10 +14,6 @@ def ILO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,DLO4_df,DLO5_df,DLO6_df,ILO1_df,IL
     teacher1_subject = subjects[0]['subject']
     teacher2_name = teachers_div1[1]['name']
     teacher2_subject = subjects[1]['subject']
-    teacher3_name = teachers_div1[2]['name']
-    teacher3_subject = subjects[2]['subject']
-    teacher4_name = teachers_div1[3]['name']
-    teacher4_subject = subjects[3]['subject']
     semester = session.get('semester')
 
     df.columns = df.columns.str.strip().str.upper()
@@ -29,6 +25,7 @@ def ILO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,DLO4_df,DLO5_df,DLO6_df,ILO1_df,IL
             return df
         df.columns = [str(col).strip().upper() for col in df.columns] #columns ke whitespaces hata tah but sirf end ke bich ke nhi
         # like Roll No ka ROLL NO hi hoga so [No spaces allowed in column name]
+        df['ROLLNO'] = df['ROLLNO'].astype(str).str.strip()
         return df
 
     DLO1_df = clean_columns(DLO1_df)
@@ -88,27 +85,49 @@ def ILO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,DLO4_df,DLO5_df,DLO6_df,ILO1_df,IL
     teacher2_ILO_subject = subjects[12]['subject']
     teacher3_ILO_name = teachers_div1[13]['name']
     teacher3_ILO_subject = subjects[13]['subject']
-    teacher4_ILO_name = teachers_div1[14]['name']
-    teacher4_ILO_subject = subjects[14]['subject']
-    new_df.loc[teacher1_subject] = analyze_grade(df, 'GRADE1')
-    new_df.loc[teacher2_subject] = analyze_grade(df, 'GRADE4')
-    # new_df.loc[teacher3_subject] = analyze_grade(df, 'GRADE7')
-    # new_df.loc[teacher4_subject] = analyze_grade(df, 'GRADE10') grades puure change honge 2 core 2-DLO-1_ILO
-    new_df.loc[teacher1_DLO_subject] = analyze_DLO_grade(df, DLO1_df,'GRADE7') #13 ka 7 kiya
-    new_df.loc[teacher2_DLO_subject] = analyze_DLO_grade(df, DLO2_df,'GRADE7')
-    new_df.loc[teacher3_DLO_subject] = analyze_DLO_grade(df, DLO3_df,'GRADE7')
-
-    new_df.loc[teacher4_DLO_subject] = analyze_DLO_grade(df, DLO4_df,'GRADE10')
-    new_df.loc[teacher5_DLO_subject] = analyze_DLO_grade(df, DLO5_df,'GRADE10')
-    new_df.loc[teacher6_DLO_subject] = analyze_DLO_grade(df, DLO6_df,'GRADE10')
-
-    new_df.loc[teacher1_ILO_subject] = analyze_DLO_grade(df, ILO1_df,'GRADE13') #grade change hogaaaa assuming 16
-    new_df.loc[teacher2_ILO_subject] = analyze_DLO_grade(df, ILO2_df, 'GRADE13')
-    new_df.loc[teacher3_ILO_subject] = analyze_DLO_grade(df, ILO3_df, 'GRADE13')
-    new_df.loc[teacher4_ILO_subject] = analyze_DLO_grade(df, ILO4_df, 'GRADE13')
+    if semester==7:
+        teacher4_ILO_name = teachers_div1[14]['name']
+        teacher4_ILO_subject = subjects[14]['subject']
+    if semester==7:
+        new_df.loc[teacher1_subject] = analyze_grade(df, 'GRADE1')
+        new_df.loc[teacher2_subject] = analyze_grade(df, 'GRADE4')
+        # DLO bucket 1
+        new_df.loc[teacher1_DLO_subject] = analyze_DLO_grade(df, DLO1_df, 'GRADE7')
+        new_df.loc[teacher2_DLO_subject] = analyze_DLO_grade(df, DLO2_df, 'GRADE7')
+        new_df.loc[teacher3_DLO_subject] = analyze_DLO_grade(df, DLO3_df, 'GRADE7')
+        # DLO bucket 2
+        new_df.loc[teacher4_DLO_subject] = analyze_DLO_grade(df, DLO4_df, 'GRADE10')
+        new_df.loc[teacher5_DLO_subject] = analyze_DLO_grade(df, DLO5_df, 'GRADE10')
+        new_df.loc[teacher6_DLO_subject] = analyze_DLO_grade(df, DLO6_df, 'GRADE10')
+        # ILO
+        new_df.loc[teacher1_ILO_subject] = analyze_DLO_grade(df, ILO1_df, 'GRADE13')
+        new_df.loc[teacher2_ILO_subject] = analyze_DLO_grade(df, ILO2_df, 'GRADE13')
+        new_df.loc[teacher3_ILO_subject] = analyze_DLO_grade(df, ILO3_df, 'GRADE13')
+        new_df.loc[teacher4_ILO_subject] = analyze_DLO_grade(df, ILO4_df, 'GRADE13')
+    elif semester==8:
+        new_df.loc[teacher1_subject] = analyze_grade(df, 'GRADE1')
+        # DLO bucket 1
+        new_df.loc[teacher1_DLO_subject] = analyze_DLO_grade(df, DLO1_df, 'GRADE4')
+        new_df.loc[teacher2_DLO_subject] = analyze_DLO_grade(df, DLO2_df, 'GRADE4')
+        new_df.loc[teacher3_DLO_subject] = analyze_DLO_grade(df, DLO3_df, 'GRADE4')
+        # DLO bucket 2
+        new_df.loc[teacher4_DLO_subject] = analyze_DLO_grade(df, DLO4_df, 'GRADE7')
+        new_df.loc[teacher5_DLO_subject] = analyze_DLO_grade(df, DLO5_df, 'GRADE7')
+        new_df.loc[teacher6_DLO_subject] = analyze_DLO_grade(df, DLO6_df, 'GRADE7')
+        # ILO
+        new_df.loc[teacher1_ILO_subject] = analyze_DLO_grade(df, ILO1_df, 'GRADE10')
+        new_df.loc[teacher2_ILO_subject] = analyze_DLO_grade(df, ILO2_df, 'GRADE10')
+        new_df.loc[teacher3_ILO_subject] = analyze_DLO_grade(df, ILO3_df, 'GRADE10')
 
     new_df.index.name = "Subject"
-    new_df.insert(0, 'Faculty',
-                      [teacher1_name, teacher2_name, teacher1_DLO_name,
-                       teacher2_DLO_name, teacher3_DLO_name,teacher4_DLO_name,teacher5_DLO_name,teacher6_DLO_name, teacher1_ILO_name, teacher2_ILO_name, teacher3_ILO_name, teacher4_ILO_name])
+    if semester==7:
+        new_df.insert(0, 'Faculty',
+                          [teacher1_name, teacher2_name, teacher1_DLO_name,
+                           teacher2_DLO_name, teacher3_DLO_name,teacher4_DLO_name,teacher5_DLO_name,teacher6_DLO_name, teacher1_ILO_name, teacher2_ILO_name, teacher3_ILO_name, teacher4_ILO_name])
+    if semester == 8:
+        new_df.insert(0, 'Faculty',
+                      [teacher1_name, teacher1_DLO_name,
+                       teacher2_DLO_name, teacher3_DLO_name, teacher4_DLO_name, teacher5_DLO_name, teacher6_DLO_name,
+                       teacher1_ILO_name, teacher2_ILO_name, teacher3_ILO_name])
+
     return new_df

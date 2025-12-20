@@ -6,31 +6,50 @@ from flask import Blueprint,session
 routes_merging_ILO = Blueprint("merge_ILO", __name__)
 def merg_ILO(df,DLO1_df,DLO2_df,DLO3_df,DLO4_df,DLO5_df,DLO6_df,ILO1_df,ILO2_df,ILO3_df,ILO4_df):
     sub = session.get('subjects', [])
+    sem = session.get('semester')
     # subjects=[sub[n]['subject'] for n in range(0,8)] subject 5 bhi ara tha jo ki empty hai
     #DATABASE CLEAN KARNA HAI EK WITHOUT SUBJECT VALUE HAI!!!
+    if sem == 7:
+        subjects=[
+            sub[0]['subject'],
+            sub[1]['subject'],
+            sub[5]['subject'],
+            sub[6]['subject'],
+            sub[7]['subject'],
+            sub[8]['subject'],
+            sub[9]['subject'],
+            sub[10]['subject'],
+            sub[11]['subject'],
+            sub[12]['subject'],
+            sub[13]['subject'],
+            sub[14]['subject'],
 
-    subjects=[
-        sub[0]['subject'],
-        sub[1]['subject'],
-        sub[5]['subject'],
-        sub[6]['subject'],
-        sub[7]['subject'],
-        sub[8]['subject'],
-        sub[9]['subject'],
-        sub[10]['subject'],
-        sub[11]['subject'],
-        sub[12]['subject'],
-        sub[13]['subject'],
-        sub[14]['subject'],
+        ]
+    elif sem ==8:
+        subjects = [
+            sub[0]['subject'],
+            sub[5]['subject'],
+            sub[6]['subject'],
+            sub[7]['subject'],
+            sub[8]['subject'],
+            sub[9]['subject'],
+            sub[10]['subject'],
+            sub[11]['subject'],
+            sub[12]['subject'],
+            sub[13]['subject'],
 
-    ]
-    grades = ["GRADE1", "GRADE4",] #for calculating percentage DLO ka alag lagega isiliye no GRADE13
-    all_grades = ["GRADE1", "GRADE4", "GRADE7", "GRADE10","GRADE13"] #for calculating kt's
+        ]
+    if sem ==7:
+        grades = ["GRADE1", "GRADE4"] #for calculating percentage DLO ka alag lagega isiliye no GRADE13
+        all_grades = ["GRADE1", "GRADE4", "GRADE7", "GRADE10","GRADE13"] #for calculating kt's
+    elif sem ==8:
+        grades = ["GRADE1"]  # for calculating percentage DLO ka alag lagega isiliye no GRADE13
+        all_grades = ["GRADE1", "GRADE4", "GRADE7", "GRADE10"]  # for calculating kt's
 
     year=session.get("year")
     prev_year=f'{int(year.split("-")[0])-1}-{year.split("-")[0]}'
     branch=session.get('branch').lower()
-    sem=session.get('semester')
+
 
 
     df=df[~(df['EXAM2'].str.contains(r'\+',na=False))&~(df['EXAMTOTAL'].isnull())]
@@ -57,17 +76,27 @@ def merg_ILO(df,DLO1_df,DLO2_df,DLO3_df,DLO4_df,DLO5_df,DLO6_df,ILO1_df,ILO2_df,
     def safe_analyze(DLO_df, grade):
         return analyze_DLO_subject(DLO_df, grade) if not DLO_df.empty else (None, None, None, None)
     #first checking through above function if df is empty or not then appending
-    analysis.append(safe_analyze(DLO1_df, "GRADE7"))
-    analysis.append(safe_analyze(DLO2_df, "GRADE7"))
-    analysis.append(safe_analyze(DLO3_df, "GRADE7"))
-    analysis.append(safe_analyze(DLO4_df, "GRADE10"))
-    analysis.append(safe_analyze(DLO5_df, "GRADE10"))
-    analysis.append(safe_analyze(DLO6_df, "GRADE10"))
-    analysis.append(safe_analyze(ILO1_df, "GRADE13"))
-    analysis.append(safe_analyze(ILO2_df, "GRADE13"))
-    analysis.append(safe_analyze(ILO3_df, "GRADE13"))
-    analysis.append(safe_analyze(ILO4_df, "GRADE13"))
-
+    if sem ==7:
+        analysis.append(safe_analyze(DLO1_df, "GRADE7"))
+        analysis.append(safe_analyze(DLO2_df, "GRADE7"))
+        analysis.append(safe_analyze(DLO3_df, "GRADE7"))
+        analysis.append(safe_analyze(DLO4_df, "GRADE10"))
+        analysis.append(safe_analyze(DLO5_df, "GRADE10"))
+        analysis.append(safe_analyze(DLO6_df, "GRADE10"))
+        analysis.append(safe_analyze(ILO1_df, "GRADE13"))
+        analysis.append(safe_analyze(ILO2_df, "GRADE13"))
+        analysis.append(safe_analyze(ILO3_df, "GRADE13"))
+        analysis.append(safe_analyze(ILO4_df, "GRADE13"))
+    elif sem ==8:
+        analysis.append(safe_analyze(DLO1_df, "GRADE4"))
+        analysis.append(safe_analyze(DLO2_df, "GRADE4"))
+        analysis.append(safe_analyze(DLO3_df, "GRADE4"))
+        analysis.append(safe_analyze(DLO4_df, "GRADE7"))
+        analysis.append(safe_analyze(DLO5_df, "GRADE7"))
+        analysis.append(safe_analyze(DLO6_df, "GRADE7"))
+        analysis.append(safe_analyze(ILO1_df, "GRADE10"))
+        analysis.append(safe_analyze(ILO2_df, "GRADE10"))
+        analysis.append(safe_analyze(ILO3_df, "GRADE10"))
     curr_data_df = DataFrame({
         "subject": subjects,
         "40%-49%": [x[0] for x in analysis],

@@ -124,7 +124,6 @@
               type="text"
               placeholder="Enter subject 2"
               name="Subject-2"
-              required
             />
           </div>
           <div class="subject3">
@@ -268,19 +267,26 @@ function updateTeacherForm() {
     // const coreSubjectCount = withDLO ? 4 : 5
     let coreSubjectCount;
     let dloCount;
+    let iloCount;
     if(withDLO){
         coreSubjectCount=4
         dloCount=3
     }
-    else if(withILO){
+    else if(withILO && semester === 7){
         coreSubjectCount=2
         dloCount=6
+        iloCount=4
+    }
+    else if(withILO && semester === 8){
+        coreSubjectCount=1
+        dloCount=6
+        iloCount=3
     }
     else{
         coreSubjectCount=5
         dloCount=0
     }
-    const iloCount = withILO ? 4 : 0
+
     for (let DLO = 1; DLO <= 6; DLO++) {
         const DLOinput = document.querySelector(`.DLO${DLO}`)
         DLOinput.style.display = "none";
@@ -294,6 +300,7 @@ function updateTeacherForm() {
     document.querySelector(".subject5").style.display = withDLO || withILO ? "none" : "block";
     document.querySelector(".subject3").style.display = withILO ? "none" : "block";
     document.querySelector(".subject4").style.display = withILO ? "none" : "block";
+    document.querySelector(".subject2").style.display = (semester===8) ? "none" : "block";
 
     for (let d = 1; d <= divisions; d++) {
         const divContainer = document.createElement("div")

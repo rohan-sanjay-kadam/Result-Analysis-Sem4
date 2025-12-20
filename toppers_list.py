@@ -1,17 +1,20 @@
 import pandas as pd
 def list_all(df):
     df.columns = df.columns.str.strip().str.upper()
+
     df['EXAMTOTAL'] = (
         df['EXAMTOTAL']
-        .astype(str)  # ensure string
-        .str.extract(r'(\d+)$')  # extract last digits
-        .astype(float)  # convert to numeric
+        .astype(str)
+        .str.findall(r'\d+(?:\.\d+)?')  # find ALL numbers
+        .str[-1]                        # take the LAST one
     )
     df['EXAMTOTAL'] = pd.to_numeric(df['EXAMTOTAL'], errors='coerce')
-    sorted_df=df.sort_values(by=['EXAMTOTAL'],ascending=False)
-    sorted_df=sorted_df.head(3)
-    sorted_df=sorted_df[["ROLLNO","NAME","EXAMTOTAL"]]
+    sorted_df = (
+        df.sort_values(by='EXAMTOTAL', ascending=False)
+          .head(3)[['ROLLNO', 'NAME', 'EXAMTOTAL']]
+    )
     return sorted_df
+
 
 def sub1_list(df):
     df.columns = df.columns.str.strip().str.upper()

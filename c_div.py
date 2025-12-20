@@ -23,6 +23,7 @@ def c_div_analysis(df,n,prn_set):
     semester = session.get('semester')
     df.columns = df.columns.str.strip().str.upper()
     df['EXAM2'] = df['EXAM2'].apply(str)
+    df['ROLLNO'] = df['ROLLNO'].astype(str).str.strip()
 
     df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'].isin(prn_set))]
 

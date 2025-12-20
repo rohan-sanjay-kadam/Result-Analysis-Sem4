@@ -27,6 +27,7 @@ def c_div_DLO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,prn_set):
             return df
         df.columns = [str(col).strip().upper() for col in df.columns] #columns ke whitespaces hata tah but sirf end ke bich ke nhi
         # like Roll No ka ROLL NO hi hoga so [No spaces allowed in column name]
+        df['ROLLNO'] = df['ROLLNO'].astype(str).str.strip()
         return df
     DLO1_df = clean_columns(DLO1_df)
     DLO2_df = clean_columns(DLO2_df)

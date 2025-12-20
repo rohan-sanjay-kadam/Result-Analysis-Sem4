@@ -447,7 +447,11 @@ def convert_excel():
         ILO1_df = pd.read_excel(file3,sheet_name=0)
         ILO2_df = pd.read_excel(file3, sheet_name=1)
         ILO3_df = pd.read_excel(file3, sheet_name=2)
-        ILO4_df = pd.read_excel(file3, sheet_name=3)
+        empty_df=pd.DataFrame()
+        if semester==7:
+            ILO4_df = pd.read_excel(file3, sheet_name=3)
+        else:
+            ILO4_df = empty_df
 
         final_dataframes_dictionary = {}
         kt_df_dictionary = {}
@@ -469,15 +473,25 @@ def convert_excel():
         overall_result = round(overall_pass / overall_appeared * 100, 2)
         toppers = toppers_list.list_all(df)
         subject_1_toppers = toppers_list.sub1_list(df)
-        subject_2_toppers = toppers_list.sub2_list(df)
+        if semester==7:
+            subject_2_toppers = toppers_list.sub2_list(df)
         DLO_toppers={}
         DLO_df=[DLO1_df,DLO2_df,DLO3_df,DLO4_df,DLO5_df,DLO6_df]
-        for i in range(1,7):
-            DLO_toppers[f"DLO{i}_toppers"] = toppers_list_DLO.DLO_list(df,DLO_df[i-1],"EXAM9" if i<4 else "EXAM12")
+        if semester==7:
+            for i in range(1,7):
+                DLO_toppers[f"DLO{i}_toppers"] = toppers_list_DLO.DLO_list(df,DLO_df[i-1],"EXAM9" if i<4 else "EXAM12")
+        else:
+            for i in range(1, 7):
+                DLO_toppers[f"DLO{i}_toppers"] = toppers_list_DLO.DLO_list(df, DLO_df[i - 1],
+                                                                           "EXAM6" if i < 4 else "EXAM9")
         ILO_toppers={}
         ILO_df=[ILO1_df,ILO2_df,ILO3_df,ILO4_df]
-        for i in range(1,5):
-            ILO_toppers[f"ILO{i}_toppers"] = toppers_list_DLO.DLO_list(df,ILO_df[i-1],"EXAM15")
+        if semester==7:
+            for i in range(1,5):
+                ILO_toppers[f"ILO{i}_toppers"] = toppers_list_DLO.DLO_list(df,ILO_df[i-1],"EXAM15")
+        else:
+            for i in range(1,5):
+                ILO_toppers[f"ILO{i}_toppers"] = toppers_list_DLO.DLO_list(df,ILO_df[i-1],"EXAM12")
         # DLO2_toppers = toppers_list_DLO.DLO_list(df,DLO2_df)
         # DLO3_toppers = toppers_list_DLO.DLO_list(df,DLO3_df)
         # DLO4_toppers = toppers_list_DLO.DLO_list(df,DLO4_df)
@@ -506,13 +520,14 @@ def convert_excel():
             row = 3  # Start at row 3
 
             toppers.to_excel(writer, sheet_name="Toppers List", index=False, startrow=row)
-            row += len(toppers) + 4
+            row += 7
 
             subject_1_toppers.to_excel(writer, sheet_name="Toppers List", index=False, startrow=row)
-            row += len(subject_1_toppers) + 4
+            row += 7
 
-            subject_2_toppers.to_excel(writer, sheet_name="Toppers List", index=False, startrow=row)
-            row += len(subject_2_toppers) + 4
+            if semester==7:
+                subject_2_toppers.to_excel(writer, sheet_name="Toppers List", index=False, startrow=row)
+                row += 7
 
             empty_df = pd.DataFrame([["N/A", "N/A", "N/A"]], columns=["ROLLNO", "NAME", "MARKS"])
             for i in range(1,7):
@@ -557,45 +572,83 @@ def convert_excel():
             for cell in row:
                 if cell.value is not None:
                     cell.border = thin_border  # Apply border
-        ws['B1'] = "Toppers List"
-        ws["B1"].font = Font(size=12, bold=True)
-        ws["B1"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B9'] = f"{subject_1}"
-        ws["B9"].font = Font(size=12, bold=True)
-        ws["B9"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B16'] = f"{subject_2}"
-        ws["B16"].font = Font(size=12, bold=True)
-        ws["B16"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B23'] = f"{DLO_1}"
-        ws["B23"].font = Font(size=12, bold=True)
-        ws["B23"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B30'] = f"{DLO_2}"
-        ws["B30"].font = Font(size=12, bold=True)
-        ws["B30"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B37'] = f"{DLO_3}"
-        ws["B37"].font = Font(size=12, bold=True)
-        ws["B37"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B44'] = f"{DLO_4}"
-        ws["B44"].font = Font(size=12, bold=True)
-        ws["B44"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B51'] = f"{DLO_5}"
-        ws["B51"].font = Font(size=12, bold=True)
-        ws["B51"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B58'] = f"{DLO_6}"
-        ws["B58"].font = Font(size=12, bold=True)
-        ws["B58"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B65'] = f"{ILO_1}"
-        ws["B65"].font = Font(size=12, bold=True)
-        ws["B65"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B72'] = f"{ILO_2}"
-        ws["B72"].font = Font(size=12, bold=True)
-        ws["B72"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B79'] = f"{ILO_3}"
-        ws["B79"].font = Font(size=12, bold=True)
-        ws["B79"].alignment = Alignment(horizontal="center", vertical="center")
-        ws['B86'] = f"{ILO_4}"
-        ws["B86"].font = Font(size=12, bold=True)
-        ws["B86"].alignment = Alignment(horizontal="center", vertical="center")
+        if semester==7:
+            ws['B1'] = "Toppers List"
+            ws["B1"].font = Font(size=12, bold=True)
+            ws["B1"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B9'] = f"{subject_1}"
+            ws["B9"].font = Font(size=12, bold=True)
+            ws["B9"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B16'] = f"{subject_2}"
+            ws["B16"].font = Font(size=12, bold=True)
+            ws["B16"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B23'] = f"{DLO_1}"
+            ws["B23"].font = Font(size=12, bold=True)
+            ws["B23"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B30'] = f"{DLO_2}"
+            ws["B30"].font = Font(size=12, bold=True)
+            ws["B30"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B37'] = f"{DLO_3}"
+            ws["B37"].font = Font(size=12, bold=True)
+            ws["B37"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B44'] = f"{DLO_4}"
+            ws["B44"].font = Font(size=12, bold=True)
+            ws["B44"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B51'] = f"{DLO_5}"
+            ws["B51"].font = Font(size=12, bold=True)
+            ws["B51"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B58'] = f"{DLO_6}"
+            ws["B58"].font = Font(size=12, bold=True)
+            ws["B58"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B65'] = f"{ILO_1}"
+            ws["B65"].font = Font(size=12, bold=True)
+            ws["B65"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B72'] = f"{ILO_2}"
+            ws["B72"].font = Font(size=12, bold=True)
+            ws["B72"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B79'] = f"{ILO_3}"
+            ws["B79"].font = Font(size=12, bold=True)
+            ws["B79"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B86'] = f"{ILO_4}"
+            ws["B86"].font = Font(size=12, bold=True)
+            ws["B86"].alignment = Alignment(horizontal="center", vertical="center")
+        else:
+            ws['B1'] = "Toppers List"
+            ws["B1"].font = Font(size=12, bold=True)
+            ws["B1"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B9'] = f"{subject_1}"
+            ws["B9"].font = Font(size=12, bold=True)
+            ws["B9"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B16'] = f"{DLO_1}"
+            ws["B16"].font = Font(size=12, bold=True)
+            ws["B16"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B23'] = f"{DLO_2}"
+            ws["B23"].font = Font(size=12, bold=True)
+            ws["B23"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B30'] = f"{DLO_3}"
+            ws["B30"].font = Font(size=12, bold=True)
+            ws["B30"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B37'] = f"{DLO_4}"
+            ws["B37"].font = Font(size=12, bold=True)
+            ws["B37"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B44'] = f"{DLO_5}"
+            ws["B44"].font = Font(size=12, bold=True)
+            ws["B44"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B51'] = f"{DLO_6}"
+            ws["B51"].font = Font(size=12, bold=True)
+            ws["B51"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B58'] = f"{ILO_1}"
+            ws["B58"].font = Font(size=12, bold=True)
+            ws["B58"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B65'] = f"{ILO_2}"
+            ws["B65"].font = Font(size=12, bold=True)
+            ws["B65"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B72'] = f"{ILO_3}"
+            ws["B72"].font = Font(size=12, bold=True)
+            ws["B72"].alignment = Alignment(horizontal="center", vertical="center")
+            ws['B79'] = f"{ILO_4}"
+            ws["B79"].font = Font(size=12, bold=True)
+            ws["B79"].alignment = Alignment(horizontal="center", vertical="center")
 
         timestamp = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S") #different name ke liye
 

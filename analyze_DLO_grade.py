@@ -22,7 +22,7 @@ def analyze_DLO_grade(df,DLO_df, grade_column):
         # if DLO_df['ROLLNO'] == df['ROLLNO']:
         # filtered_df = df.loc[df[grade_column].isin(["E", "P"]), ["ROLLNO", "NAME", grade_column]]
         # print("E_P ke rows")
-        filtered_df = df.loc[df[grade_column].isin(["O","A","B","C"]), ["ROLLNO", "NAME", grade_column]]
+        filtered_df = df.loc[df[grade_column].isin(["O","A","B","C","E","P","D","F"]), ["ROLLNO", "NAME", grade_column]]
         print(filtered_df)
 
         # E_P = df.loc[(df[grade_column] == "E") | (df[grade_column] == "P"), [grade_column]].shape[0]
