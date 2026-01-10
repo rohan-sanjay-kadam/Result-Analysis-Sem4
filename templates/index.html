@@ -25,7 +25,7 @@
       border-style: solid;
       border-color: rgba(0, 0, 0, 0.29);
       border-radius: 20px;
-      cursor: pointer;
+<!--      cursor: pointer;-->
     }
 
     .file-upload-wrapper input[type="file"] {
@@ -69,13 +69,12 @@
             </div> -->
               <form method="POST" action="{{url_for('convert_excel')}}" enctype="multipart/form-data">
             <div class="file-upload-wrapper">
-<!--                <span class="file-upload-text">Choose File</span>-->
+                <div class="file-upload-text">Result Sheet:</div>
                 <input type="file" name="file" id="fileInput" accept="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"/>
             </div>
 
             <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
               <button type="submit" class="btn btn-lg btn-success">Convert File</button>
-              <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Download Converted File</button>
             </div>
               </form>
           </div>
@@ -86,6 +85,10 @@
         if ({{semester}}==5 || {{semester}}==6 || {{semester}}==7 || {{semester}}==8 ){
             const parent = document.querySelector(".file-upload-wrapper")
             const input = document.createElement("input")
+            const text = document.createElement("div")
+            text.className="file-upload-text"
+            text.innerText="DLO Sheet:"
+            parent.appendChild(text)
             input.setAttribute("type", "file")
             input.setAttribute("name", "file2")
             input.setAttribute("accept", "'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'")
@@ -94,6 +97,10 @@
         if({{semester}}==7 || {{semester}}==8 ){
             const parent = document.querySelector(".file-upload-wrapper")
             const input = document.createElement("input")
+            const text = document.createElement("div")
+            text.className="file-upload-text"
+            text.innerText="ILO Sheet:"
+            parent.appendChild(text)
             input.setAttribute("type", "file")
             input.setAttribute("name", "file3")
             input.setAttribute("accept", "'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'")
