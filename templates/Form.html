@@ -112,6 +112,13 @@
       font-size: 0.85rem;
       white-space: nowrap;
     }
+    .file-ui div {
+  color: #6b7280;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
     .div-container label {
       display: block;
@@ -218,6 +225,8 @@
 
 <!-- 🔒 YOUR ORIGINAL JS (UNCHANGED) -->
 <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        updateTeacherForm();
 document.getElementById("semester").addEventListener("change", updateTeacherForm);
 document.getElementById("divisionCount").addEventListener("change", updateTeacherForm);
 
@@ -284,10 +293,12 @@ function updateTeacherForm() {
 
         // PRN file input
         const prnDiv = document.createElement("div");
-        prnDiv.innerHTML = `<input type="file" placeholder="DIV${d} PRN" name="DIV${d}-PRN"
-            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-            application/vnd.ms-excel"
-            required>`;
+        prnDiv.className = "file-wrapper"
+        prnDiv.innerHTML = `<input type="file" name="division_file_${d}" accept=".xlsx,.xls"/>
+        <div class="file-ui">
+        <span>Upload PRN</span>
+        <div>No file chosen</div>
+        </div>`;
         divContainer.appendChild(prnDiv);
 
         // Core Teachers
@@ -345,6 +356,7 @@ function updateTeacherForm() {
         if (ILOinput) ILOinput.style.display = "block";
     }
 }
+    });
 </script>
 
 <!-- ✅ FIX 2: SHOW SELECTED FILE NAME (UI ONLY) -->
