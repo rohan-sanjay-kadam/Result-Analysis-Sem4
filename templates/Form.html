@@ -2,211 +2,218 @@
 
 {% block style %}
 <style>
-  /* ENSURE FORM IS ABOVE BACKGROUND */
-  .page-content {
-    position: relative;
-    z-index: 1;
-  }
+    /* ENSURE FORM IS ABOVE BACKGROUND */
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
 
-  .form-card {
-    background: rgba(255, 255, 255, 0.96);
-    border-radius: 18px;
-    padding: 2.4rem 2.6rem;
-    box-shadow: 0 25px 45px rgba(0,0,0,0.1);
-    margin-bottom: 3rem;
-  }
+    .form-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 18px;
+      padding: 2.4rem 2.6rem;
+      box-shadow: 0 25px 45px rgba(0,0,0,0.1);
+      margin-bottom: 3rem;
+    }
 
-  .section-title {
-    font-size: 1.65rem;
-    font-weight: 600;
-    margin-bottom: 1.6rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 1px solid #e5e7eb;
-    color: #111827;
-  }
+    .section-title {
+      font-size: 1.65rem;
+      font-weight: 600;
+      margin-bottom: 1.6rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #e5e7eb;
+      color: #111827;
+    }
 
-  label {
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin-bottom: 0.35rem;
-    color: #374151;
-  }
+    label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+      color: #374151;
+    }
 
-  input,
-  select {
-    height: 44px;
-    border-radius: 12px !important;
-  }
+    input,
+    select {
+      height: 44px;
+      border-radius: 12px !important;
+    }
 
-  input:focus,
-  select:focus {
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.18) !important;
-    border-color: #2563eb !important;
-  }
+    input:focus,
+    select:focus {
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.18) !important;
+      border-color: #2563eb !important;
+    }
 
-  /* ✅ FIX 1: MODERN DROPDOWN (NO FUNCTIONAL CHANGE) */
-  select.form-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    /* ✅ FIX 1: MODERN DROPDOWN (NO FUNCTIONAL CHANGE) */
+    select.form-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
 
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
 
-    padding-right: 40px;
-  }
+      padding-right: 40px;
+    }
 
-  /* DIVISIONS GRID */
-  .division {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 2.5rem;
-  }
+    /* DIVISIONS GRID */
+    .division {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 2.5rem;
+    }
 
-  .div-container {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 1.8rem;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-  }
+    .div-container {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.8rem;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    }
 
-  .div-container h5 {
-    font-weight: 600;
-    margin-bottom: 1.2rem;
-  }
+    .div-container h5 {
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
 
-  /* FILE UPLOAD */
-  .file-wrapper {
-    position: relative;
-    width: 100%;
-    margin-bottom: 1.4rem;
-  }
+    /* FILE UPLOAD */
+    .file-wrapper {
+      position: relative;
+      width: 100%;
+      margin-bottom: 1.4rem;
+    }
 
-  .file-wrapper input[type="file"] {
-    opacity: 0;
-    position: absolute;
-    inset: 0;
-    cursor: pointer;
-  }
+    .file-wrapper input[type="file"] {
+      opacity: 0;
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+    }
 
-  .file-ui {
-    border: 1.5px dashed #93c5fd;
-    background: #f8fafc;
-    padding: 14px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.95rem;
-    color: #374151;
-  }
+    .file-ui {
+      border: 1.5px dashed #93c5fd;
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      color: #374151;
+    }
 
-  .file-ui span {
-    background: #2563eb;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 10px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-  }
+    .file-ui span {
+      background: #2563eb;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
 
-  .div-container label {
-    display: block;
-    margin-top: 1rem;
-  }
+    .div-container label {
+      display: block;
+      margin-top: 1rem;
+    }
 
-  .div-container input[type="text"] {
-    width: 100%;
-    padding: 0 0.9rem;
-    border-radius: 12px;
-  }
+    .div-container input[type="text"] {
+      width: 100%;
+      padding: 0 0.9rem;
+      border-radius: 12px;
+    }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="container page-content mt-4 mb-5">
 
-<form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
 
-  <!-- ACADEMIC DETAILS -->
-  <div class="form-card">
-    <div class="section-title">Academic Details</div>
+        <!-- ACADEMIC DETAILS -->
+        <div class="form-card">
+            <div class="section-title">Academic Details</div>
 
-    <div class="row g-4">
-      <div class="col-md-3">
-        <label>Year</label>
-        <input type="text" class="form-control" name="year" placeholder="24-25" required>
-      </div>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <label>Year</label>
+                    <input type="text" class="form-control" name="year" placeholder="24-25" required>
+                </div>
 
-      <div class="col-md-3">
-        <label>Semester</label>
-        <select class="form-select" name="semester" id="semester">
-          {% for i in range(1,9) %}
-            <option value="{{ i }}">{{ i }}</option>
-          {% endfor %}
-        </select>
-      </div>
+                <div class="col-md-3">
+                    <label>Semester</label>
+                    <select class="form-select" name="semester" id="semester">
+                        {% for i in range(1,9) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-      <div class="col-md-3">
-        <label>Branch</label>
-        <select class="form-select" name="branch">
-          <option>CE</option><option>IT</option><option>AIDS</option>
-          <option>AIML</option><option>EXTC</option><option>ME</option>
-        </select>
-      </div>
+                <div class="col-md-3">
+                    <label>Branch</label>
+                    <select class="form-select" name="branch">
+                        <option>CE</option>
+                        <option>IT</option>
+                        <option>AIDS</option>
+                        <option>AIML</option>
+                        <option>EXTC</option>
+                        <option>ME</option>
+                    </select>
+                </div>
 
-      <div class="col-md-3">
-        <label>No. of Divisions</label>
-        <select class="form-select" name="divisionCount" id="divisionCount">
-          <option>1</option><option>2</option><option>3</option><option>4</option>
-        </select>
-      </div>
-    </div>
-  </div>
+                <div class="col-md-3">
+                    <label>No. of Divisions</label>
+                    <select class="form-select" name="divisionCount" id="divisionCount">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-  <!-- SUBJECTS -->
-  <div class="form-card">
-    <div class="section-title">Subjects</div>
-    <div class="row g-4">
-      {% for i in range(1,6) %}
-      <div class="col-md-3 subject{{ i }}">
-        <label>Subject {{ i }}</label>
-        <input type="text" class="form-control" name="Subject-{{ i }}">
-      </div>
-      {% endfor %}
+        <!-- SUBJECTS -->
+        <div class="form-card">
+            <div class="section-title">Subjects</div>
+            <div class="row g-4">
+                {% for i in range(1,6) %}
+                <div class="col-md-3 subject{{ i }}">
+                    <label>Subject {{ i }}</label>
+                    <input type="text" class="form-control" name="Subject-{{ i }}">
+                </div>
+                {% endfor %}
 
-      {% for i in range(1,7) %}
-      <div class="col-md-3 DLO{{ i }}" style="display:none;">
-        <label>DLO {{ i }}</label>
-        <input type="text" class="form-control" name="DLO-{{ i }}">
-      </div>
-      {% endfor %}
+                {% for i in range(1,7) %}
+                <div class="col-md-3 DLO{{ i }}" style="display:none;">
+                    <label>DLO {{ i }}</label>
+                    <input type="text" class="form-control" name="DLO-{{ i }}">
+                </div>
+                {% endfor %}
 
-      {% for i in range(1,5) %}
-      <div class="col-md-3 ILO{{ i }}" style="display:none;">
-        <label>ILO {{ i }}</label>
-        <input type="text" class="form-control" name="ILO-{{ i }}">
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+                {% for i in range(1,5) %}
+                <div class="col-md-3 ILO{{ i }}" style="display:none;">
+                    <label>ILO {{ i }}</label>
+                    <input type="text" class="form-control" name="ILO-{{ i }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
-  <!-- DIVISION & TEACHERS -->
-  <div class="form-card">
-    <div class="section-title">Division & Teachers</div>
-    <div class="division"></div>
-  </div>
+        <!-- DIVISION & TEACHERS -->
+        <div class="form-card">
+            <div class="section-title">Division & Teachers</div>
+            <div class="division"></div>
+        </div>
 
-  <div class="text-end">
-    <button type="submit" class="btn btn-primary btn-lg px-4">
-      Next →
-    </button>
-  </div>
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary btn-lg px-4">
+                Next →
+            </button>
+        </div>
 
-</form>
+    </form>
 </div>
 
 <!-- 🔒 YOUR ORIGINAL JS (UNCHANGED) -->
@@ -215,94 +222,149 @@ document.getElementById("semester").addEventListener("change", updateTeacherForm
 document.getElementById("divisionCount").addEventListener("change", updateTeacherForm);
 
 function updateTeacherForm() {
-    const semester = parseInt(document.getElementById("semester").value)
-    const divisions = parseInt(document.getElementById("divisionCount").value)
-    const container = document.querySelector(".division")
-    container.innerHTML = ""
+    const semester = parseInt(document.getElementById("semester").value);
+    const divisions = parseInt(document.getElementById("divisionCount").value);
+    const container = document.querySelector(".division");
 
-    const withDLO = (semester === 5 || semester === 6)
-    const withILO = (semester === 7 || semester === 8)
+    // Clear old elements
+    container.innerHTML = "";
 
-    let coreSubjectCount;
-    let dloCount = 0;
-    let iloCount = 0;
+    const withDLO = (semester === 5 || semester === 6);
+    const withILO = (semester === 7 || semester === 8);
+
+    let coreSubjectCount, dloCount, iloCount;
 
     if (withDLO) {
-        coreSubjectCount = 4
-        dloCount = 3
-    }
-    else if (withILO && semester === 7) {
-        coreSubjectCount = 2
-        dloCount = 6
-        iloCount = 4
-    }
-    else if (withILO && semester === 8) {
-        coreSubjectCount = 1
-        dloCount = 6
-        iloCount = 3
-    }
-    else {
-        coreSubjectCount = 5
+        coreSubjectCount = 4;
+        dloCount = 3;
+        iloCount = 0;
+    } else if (withILO && semester === 7) {
+        coreSubjectCount = 2;
+        dloCount = 6;
+        iloCount = 4;
+    } else if (withILO && semester === 8) {
+        coreSubjectCount = 1;
+        dloCount = 6;
+        iloCount = 3;
+    } else {
+        coreSubjectCount = 5;
+        dloCount = 0;
+        iloCount = 0;
     }
 
+    // Hide all DLO and ILO inputs initially
+    for (let d = 1; d <= 6; d++) {
+        const DLOinput = document.querySelector(`.DLO${d}`);
+        if (DLOinput) DLOinput.style.display = "none";
+    }
+
+    for (let i = 1; i <= 4; i++) {
+        const ILOinput = document.querySelector(`.ILO${i}`);
+        if (ILOinput) ILOinput.style.display = "none";
+    }
+
+    // Show/hide core subjects based on semester
+    const subjectSelectors = [".subject2", ".subject3", ".subject4", ".subject5"];
+    subjectSelectors.forEach(selector => {
+        const el = document.querySelector(selector);
+        if (!el) return;
+        if (selector === ".subject5") el.style.display = (withDLO || withILO) ? "none" : "block";
+        else if (selector === ".subject3" || selector === ".subject4") el.style.display = withILO ? "none" : "block";
+        else if (selector === ".subject2") el.style.display = (semester === 8) ? "none" : "block";
+    });
+
+    // Generate division containers
     for (let d = 1; d <= divisions; d++) {
-        const divContainer = document.createElement("div")
-        divContainer.className = "div-container"
+        const divContainer = document.createElement("div");
+        divContainer.className = "div-container";
 
-        const header = document.createElement("h5")
-        header.innerText = `Division ${d}`
-        divContainer.appendChild(header)
+        const header = document.createElement("h3");
+        header.innerText = `Division ${d} Teachers`;
+        divContainer.appendChild(header);
 
-        /* FILE INPUT */
-        const fileWrapper = document.createElement("div")
-        fileWrapper.className = "file-wrapper"
-        fileWrapper.innerHTML = `
-          <div class="file-ui">
-            <span>Select File</span>
-            <div>No file chosen</div>
-          </div>
-          <input type="file" name="DIV${d}-PRN" required>
-        `
-        divContainer.appendChild(fileWrapper)
+        // PRN file input
+        const prnDiv = document.createElement("div");
+        prnDiv.innerHTML = `<input type="file" placeholder="DIV${d} PRN" name="DIV${d}-PRN"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+            application/vnd.ms-excel"
+            required>`;
+        divContainer.appendChild(prnDiv);
 
+        // Core Teachers
         for (let t = 1; t <= coreSubjectCount; t++) {
-            const label = document.createElement("label")
-            label.innerText = `Teacher ${t}`
-            const input = document.createElement("input")
-            input.type = "text"
-            input.required = true
-            input.name = `Subject-${t}-teacher-div${d}`
-            input.className = "form-control"
-            divContainer.appendChild(label)
-            divContainer.appendChild(input)
+            const label = document.createElement("label");
+            label.innerText = `Teacher ${t}`;
+            const input = document.createElement("input");
+            input.type = "text";
+            input.required = true;
+            input.name = `Subject-${t}-teacher-div${d}`;
+            input.placeholder = `Enter Teacher ${t} name`;
+            divContainer.appendChild(label);
+            divContainer.appendChild(input);
         }
 
-        container.appendChild(divContainer)
+        // DLO Teachers
+        for (let dlo = 1; dlo <= dloCount; dlo++) {
+            const label = document.createElement("label");
+            label.innerText = `DLO Teacher ${dlo}`;
+            const input = document.createElement("input");
+            input.type = "text";
+            input.required = true;
+            input.name = `DLO-${dlo}-teacher-div${d}`;
+            input.placeholder = `Enter DLO Teacher ${dlo} name`;
+            divContainer.appendChild(label);
+            divContainer.appendChild(input);
+        }
+
+        // ILO Teachers
+        if (withILO) {
+            for (let ilo = 1; ilo <= iloCount; ilo++) {
+                const label = document.createElement("label");
+                label.innerText = `ILO Teacher ${ilo}`;
+                const input = document.createElement("input");
+                input.type = "text";
+                input.required = true;
+                input.name = `ILO-${ilo}-teacher-div${d}`;
+                input.placeholder = `Enter ILO Teacher ${ilo} name`;
+                divContainer.appendChild(label);
+                divContainer.appendChild(input);
+            }
+        }
+
+        container.appendChild(divContainer);
+    }
+
+    // Show relevant DLO/ILO subjects
+    for (let dlo = 1; dlo <= dloCount; dlo++) {
+        const DLOinput = document.querySelector(`.DLO${dlo}`);
+        if (DLOinput) DLOinput.style.display = "block";
+    }
+
+    for (let ilo = 1; ilo <= iloCount; ilo++) {
+        const ILOinput = document.querySelector(`.ILO${ilo}`);
+        if (ILOinput) ILOinput.style.display = "block";
     }
 }
-
-/* ✅ REQUIRED INITIAL CALL */
-updateTeacherForm();
 </script>
 
 <!-- ✅ FIX 2: SHOW SELECTED FILE NAME (UI ONLY) -->
 <script>
-document.addEventListener("change", function (e) {
-  if (e.target.type === "file") {
-    const fileInput = e.target;
-    const fileName = fileInput.files.length
-      ? fileInput.files[0].name
-      : "No file chosen";
+    document.addEventListener("change", function (e) {
+      if (e.target.type === "file") {
+        const fileInput = e.target;
+        const fileName = fileInput.files.length
+          ? fileInput.files[0].name
+          : "No file chosen";
 
-    const wrapper = fileInput.closest(".file-wrapper");
-    if (wrapper) {
-      const label = wrapper.querySelector(".file-ui div");
-      if (label) {
-        label.textContent = fileName;
+        const wrapper = fileInput.closest(".file-wrapper");
+        if (wrapper) {
+          const label = wrapper.querySelector(".file-ui div");
+          if (label) {
+            label.textContent = fileName;
+          }
+        }
       }
-    }
-  }
-});
+    });
 </script>
 
 {% endblock %}
