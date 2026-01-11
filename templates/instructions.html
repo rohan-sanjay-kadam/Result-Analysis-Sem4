@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  .instruction-card {
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 18px;
+    padding: 2.6rem;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.1);
+    margin-bottom: 3rem;
+  }
+
+  .instruction-title {
+    font-size: 1.9rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+
+  .instruction-sub {
+    color: #4b5563;
+    margin-bottom: 2rem;
+    max-width: 850px;
+  }
+
+  .instruction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .instruction-section h6 {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 1rem;
+  }
+
+  .instruction-section p {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+  }
+
+  .reference-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 1.4rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .reference-box h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .reference-box p {
+    font-size: 0.9rem;
+    color: #374151;
+    margin-bottom: 1rem;
+  }
+
+  .reference-box img {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .btn-understand {
+    background: #16a34a;
+    border: none;
+    padding: 0.6rem 2.2rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
+  .btn-understand:hover {
+    background: #15803d;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4 mb-5">
+  <div class="instruction-card">
+
+    <div class="instruction-title">Instructions</div>
+    <div class="instruction-sub">
+      Please review the guidelines below carefully before filling the form and uploading Excel files.
+      Following these instructions ensures accurate, consistent, and error-free result analysis.
+    </div>
+
+    <div class="instruction-grid">
+
+      <div class="instruction-section">
+        <h6>EXCEL STRUCTURE</h6>
+        <p><strong>“Roll No.”</strong> must not be used as a subject name or as a column heading in any Excel sheet.</p>
+        <p>Column names must be present at the top of every Excel sheet.</p>
+        <p>Even if a subject has no students, an empty Excel sheet must still be included.</p>
+      </div>
+
+      <div class="instruction-section">
+        <h6>SUBJECT & TEACHER DETAILS</h6>
+        <p>Subject order in Excel sheets must <strong>exactly match</strong> the form order.</p>
+        <p>Filling subject input fields is optional.</p>
+        <p><strong>All teacher input fields are mandatory.</strong> If a teacher is not assigned, enter <strong>“None”</strong>.</p>
+        <p>Academic year must be entered in the format <strong>24-25</strong>.</p>
+      </div>
+
+    </div>
+
+    <!-- Reference: Column Structure -->
+    <div class="reference-box">
+      <h6>Reference: Excel Column Structure</h6>
+      <p>
+        The image below shows the correct format for column headers in your Excel sheet.
+        Ensure all required columns are present at the top and follow the prescribed naming convention.
+        Incorrect or missing headers may result in failed or inaccurate result processing.
+      </p>
+      <img
+        src="{{ url_for('static', filename='images/WhatsApp Image 2026-01-11 at 16.58.56.jpeg') }}"
+        alt="Excel column structure reference">
+    </div>
+
+    <!-- Reference: Empty Sheet -->
+    <div class="reference-box">
+      <h6>Reference: Empty Excel Sheet Submission</h6>
+      <p>
+        Even if no students are enrolled for a particular subject, an empty Excel sheet must still be uploaded.
+        The sheet should contain only the column headers and no student data, as shown below.
+      </p>
+      <img
+        src="{{ url_for('static', filename='images/WhatsApp Image 2026-01-11 at 17.00.04.jpeg') }}"
+        alt="Empty Excel sheet reference">
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('convert_excel') }}" class="btn btn-understand text-white">
+
+        I Understand
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

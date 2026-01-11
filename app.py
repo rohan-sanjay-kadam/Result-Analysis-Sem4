@@ -209,6 +209,14 @@ def index():
         return redirect(url_for("convert_excel"))
     return render_template('Form.html')
 
+@app.route("/instructions")
+def instructions():
+    return render_template("instructions.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 
 
 # Retrieving data from session and redirecting to index.html

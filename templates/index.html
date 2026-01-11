@@ -1,110 +1,151 @@
 {% extends 'base.html' %}
-{% block style%}
-  <style>
-    body{
-    bgcolor:#09145a
-    }
-    .input {
-      margin-left: 20px;
-      display: block;
-    }
 
-    .center {
-      margin-left: 71px;
-    }
+{% block style %}
+<style>
+  /* Center card */
+  .upload-container {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .file-upload-wrapper {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-      width: 445px;
-      margin-left: 25px;
-      background-color: #dee6de;
-      /* color: white; */
-      padding: 10px 20px;
-      border-style: solid;
-      border-color: rgba(0, 0, 0, 0.29);
-      border-radius: 20px;
-<!--      cursor: pointer;-->
-    }
+  .upload-card {
+    background: white;
+    width: 420px;
+    padding: 2.2rem;
+    border-radius: 18px;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.12);
+    text-align: center;
+  }
 
-    .file-upload-wrapper input[type="file"] {
-<!--      position: absolute;-->
-<!--      top: 0;-->
-<!--      left: 0;-->
-      width: 100%;
-      height: 100%;
-<!--      opacity: 0;-->
-      /* Hide the default file input */
-      cursor: pointer;
-    }
+  .upload-card h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
 
-    .file-upload-text {
-      font-size: 16px;
-    }
+  .upload-card p {
+    font-size: 0.95rem;
+    color: #475569;
+    margin-bottom: 1.6rem;
+  }
 
-    /* Hover effect */
-    .file-upload-wrapper:hover {
-      background-color: #45a049;
-    }
-  </style>
+  /* FILE UPLOAD */
+  .file-upload-wrapper {
+    margin-bottom: 1.8rem;
+  }
+
+  .file-upload-text {
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .custom-file-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    border: 2px dashed #93c5fd;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .custom-file-box:hover {
+    background: #eef2ff;
+    border-color: #2563eb;
+  }
+
+  .custom-file-box span {
+    font-size: 0.9rem;
+    color: #475569;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .custom-file-box button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    pointer-events: none;
+  }
+
+  /* SUBMIT */
+  .submit-btn {
+    background: #16a34a;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+
+  .submit-btn:hover {
+    background: #15803d;
+  }
+</style>
 {% endblock %}
-{% block body%}
 
+{% block body %}
 
-      <div class="modal modal-sheet position-static d-block bg-body-light p-4 py-md-5" tabindex="-1" role="dialog" id="modalSheet">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content rounded-2 shadow">
-            <div class="modal-header border-bottom-0 center">
-              <h1 class="modal-title fs-2 ml-3">Covert Your Excel Files</h1>
-            </div>
-            <div class="modal-body py-2 center">
-              <p>Upload your excel file in the correct format and download your converted file.</p>
-            </div>
+<div class="upload-container">
+  <div class="upload-card">
 
+    <h1>Convert Your Excel Files</h1>
+    <p>
+      Upload your Excel file in the correct format and
+      download your converted result file instantly.
+    </p>
 
-            <!-- <div class=>
-                <span class="input">Upload Excel File</span>
-                <input class="input" type="file">
-            </div> -->
-              <form method="POST" action="{{url_for('convert_excel')}}" enctype="multipart/form-data">
-            <div class="file-upload-wrapper">
-                <div class="file-upload-text">Result Sheet:</div>
-                <input type="file" name="file" id="fileInput" accept="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"/>
-            </div>
+    <form method="POST" action="{{ url_for('convert_excel') }}" enctype="multipart/form-data">
 
-            <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
-              <button type="submit" class="btn btn-lg btn-success">Convert File</button>
-            </div>
-              </form>
-          </div>
+      <!-- RESULT SHEET -->
+      <div class="file-upload-wrapper">
+        <div class="file-upload-text">Result Sheet</div>
+
+        <div class="custom-file-box" onclick="document.getElementById('fileInput').click()">
+          <span id="fileName">Click to upload Excel file</span>
+          <button type="button">Browse</button>
         </div>
+
+        <!-- REAL INPUT (DO NOT CHANGE ID / NAME) -->
+        <input
+          type="file"
+          name="file"
+          id="fileInput"
+          accept="'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'"
+          required
+          hidden
+        >
       </div>
 
-    <script>
-        if ({{semester}}==5 || {{semester}}==6 || {{semester}}==7 || {{semester}}==8 ){
-            const parent = document.querySelector(".file-upload-wrapper")
-            const input = document.createElement("input")
-            const text = document.createElement("div")
-            text.className="file-upload-text"
-            text.innerText="DLO Sheet:"
-            parent.appendChild(text)
-            input.setAttribute("type", "file")
-            input.setAttribute("name", "file2")
-            input.setAttribute("accept", "'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'")
-            parent.appendChild(input)
-        }
-        if({{semester}}==7 || {{semester}}==8 ){
-            const parent = document.querySelector(".file-upload-wrapper")
-            const input = document.createElement("input")
-            const text = document.createElement("div")
-            text.className="file-upload-text"
-            text.innerText="ILO Sheet:"
-            parent.appendChild(text)
-            input.setAttribute("type", "file")
-            input.setAttribute("name", "file3")
-            input.setAttribute("accept", "'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'.'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'")
-            parent.appendChild(input)
-        }
-    </script>
+      <button type="submit" class="btn btn-success submit-btn">
+        Convert File
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  const fileInput = document.getElementById("fileInput");
+  const fileName = document.getElementById("fileName");
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      fileName.innerText = fileInput.files[0].name;
+    } else {
+      fileName.innerText = "Click to upload Excel file";
+    }
+  });
+</script>
+
 {% endblock %}

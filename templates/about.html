@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  .about-wrapper {
+    max-width: 900px;
+    margin: 4rem auto 5rem;
+    padding: 3rem 3.5rem;
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+  }
+
+  .about-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+  }
+
+  .about-subtitle {
+    font-size: 0.95rem;
+    color: #4b5563;
+    max-width: 650px;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-divider {
+    border: none;
+    height: 1px;
+    background: #e5e7eb;
+    margin: 1.8rem 0 2.5rem;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.8rem;
+  }
+
+  .member-card {
+    padding: 1.6rem 1.8rem;
+    border-radius: 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+  }
+
+  .member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+  }
+
+  .member-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.25rem;
+  }
+
+  .member-id {
+    font-size: 0.9rem;
+    color: #2563eb;
+    font-weight: 500;
+  }
+
+  /* BUTTON FIX */
+  .about-actions {
+    margin-top: 3.2rem;
+    display: flex;
+    justify-content: center;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="about-wrapper">
+
+    <div class="about-title">About This Project</div>
+    <p class="about-subtitle">
+      This Excel Converter and Result Analysis system was developed as an academic project to simplify result processing, reduce manual errors, and ensure consistency with university-defined formats.
+    </p>
+
+    <hr class="about-divider">
+
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="member-name">Rohan Kadam</div>
+        <div class="member-id">PRN: 123A1045</div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-name">Khalid Jalal</div>
+        <div class="member-id">PRN: 123A1049</div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-name">Abdullah Fakhi</div>
+        <div class="member-id">PRN: 123A1031</div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-name">Ishan Mishra</div>
+        <div class="member-id">PRN: 123A1040</div>
+      </div>
+    </div>
+
+    <!-- CENTERED BUTTON -->
+    <div class="about-actions">
+      <a href="/" class="btn btn-outline-primary px-4">
+        ← Back to Form
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

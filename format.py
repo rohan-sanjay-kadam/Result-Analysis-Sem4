@@ -49,8 +49,9 @@ def first_sheet_formatting(ws,department,semester,no_of_divisions,year,result_di
     for i in range(1, no_of_divisions + 1):
         row = start + (i - 1) * 2
         ws.merge_cells(f'B{row}:G{row}')
-        ws[
-            f"B{row}"] = f"% RESULT {chr(64 + i)} division OF {year} BATCH: {result_dictionary[f"result_div{i}"]}%"  # chr(64+i) converts i to character 1->A and so on..
+        key = f"result_div{i}"
+        ws[f"B{row}"] = f"% RESULT {chr(64 + i)} division OF {year} BATCH: {result_dictionary[key]}%"
+
     start = start + no_of_divisions * 2
     ws.merge_cells(f'B{start}:G{start}')
     ws[f"B{start}"] = f"% OVERALL RESULT of all divisions OF {year} BATCH: {overall_result}%"
