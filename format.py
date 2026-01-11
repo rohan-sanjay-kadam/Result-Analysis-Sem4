@@ -96,20 +96,20 @@ def second_sheet_formatting(ws,department,year,total_students,prev_year1,prev_to
     ws.merge_cells('L9:O9')
     ws['L9'] = "Percentage Change (+/-)"
     ws['L9'].alignment = Alignment(horizontal="center", vertical="center")
-    for row in ws.iter_rows(min_row=23, max_row=23, min_col=2, max_col=9):  # B=2 to I=9
+    for row in ws.iter_rows(min_row=24, max_row=24, min_col=2, max_col=9):  # B=2 to I=9
         for cell in row:
             cell.border = thin_border
-    ws.merge_cells('B23:I23')
-    ws['B23'] = f"{year} Batch Number of Students"
-    ws['B23'].alignment = Alignment(horizontal="center", vertical="center")
+    ws.merge_cells('B24:I24')
+    ws['B24'] = f"{year} Batch Number of Students"
+    ws['B24'].alignment = Alignment(horizontal="center", vertical="center")
     # Apply border BEFORE merging
-    for row in ws.iter_rows(min_row=23, max_row=23, min_col=11, max_col=18):  # K=11 to R=18
+    for row in ws.iter_rows(min_row=24, max_row=24, min_col=11, max_col=18):  # K=11 to R=18
         for cell in row:
             cell.border = thin_border
     #Then merging
-    ws.merge_cells('K23:R23')
-    ws['K23'] = f"{prev_year1} Batch Number of Students"
-    ws['K23'].alignment = Alignment(horizontal="center", vertical="center")
+    ws.merge_cells('K24:R24')
+    ws['K24'] = f"{prev_year1} Batch Number of Students"
+    ws['K24'].alignment = Alignment(horizontal="center", vertical="center")
     for row in ws.iter_rows(min_row=1, max_row=ws.max_row, min_col=1, max_col=ws.max_column):
         for cell in row:
             if cell.value is not None:

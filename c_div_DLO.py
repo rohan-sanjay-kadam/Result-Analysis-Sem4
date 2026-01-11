@@ -6,83 +6,128 @@ from analyze_grade import analyze_grade
 routes_c_DLO = Blueprint("c_div_DLO", __name__)
 
 
-def c_div_DLO_analysis(df,n,DLO1_df,DLO2_df,DLO3_df,prn_set):
-    new_df = pd.DataFrame(columns=['E-P', 'D', 'C-O', 'TOTAL PASS', 'FAILED', 'No.of students appeared', '% OF RESULT'])
-    teachers_div1 = session.get(f'teachers_div{n}')
-    subjects = session.get('subjects')
-    teacher1_name = teachers_div1[0]['name']
-    teacher1_subject = subjects[0]['subject']
-    teacher2_name = teachers_div1[1]['name']
-    teacher2_subject = subjects[1]['subject']
-    teacher3_name = teachers_div1[2]['name']
-    teacher3_subject = subjects[2]['subject']
-    teacher4_name = teachers_div1[3]['name']
-    teacher4_subject = subjects[3]['subject']
-    semester = session.get('semester')
+def c_div_DLO_analysis(df, n, DLO1_df, DLO2_df, DLO3_df, prn_set):
 
-    df.columns = df.columns.str.strip().str.upper()
-    df['EXAM2'] = df['EXAM2'].apply(str)
+    # ------------------------------------------------------------
+    # Helper: clean columns
+    # ------------------------------------------------------------
     def clean_columns(df):
         if df.empty:
             return df
-        df.columns = [str(col).strip().upper() for col in df.columns] #columns ke whitespaces hata tah but sirf end ke bich ke nhi
-        # like Roll No ka ROLL NO hi hoga so [No spaces allowed in column name]
+        df = df.copy()
+        df.columns = [
+            str(col).strip().upper().replace(" ", "").replace("_", "")
+            for col in df.columns
+        ]
         df['ROLLNO'] = df['ROLLNO'].astype(str).str.strip()
         return df
+
+    # ------------------------------------------------------------
+    # Session data
+    # ------------------------------------------------------------
+    teachers_div1 = session.get(f'teachers_div{n}')
+    subjects = session.get('subjects')
+    semester = session.get('semester')  # kept (even if unused)
+
+    teacher1_name = teachers_div1[0]['name']
+    teacher1_subject = subjects[0]['subject']
+
+    teacher2_name = teachers_div1[1]['name']
+    teacher2_subject = subjects[1]['subject']
+
+    teacher3_name = teachers_div1[2]['name']
+    teacher3_subject = subjects[2]['subject']
+
+    teacher4_name = teachers_div1[3]['name']
+    teacher4_subject = subjects[3]['subject']
+
+    # ------------------------------------------------------------
+    # Clean main df
+    # ------------------------------------------------------------
+    df = df.copy()
+    df.columns = df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
+    df['EXAM2'] = df['EXAM2'].astype(str)
+
+    # ------------------------------------------------------------
+    # Clean DLO dfs
+    # ------------------------------------------------------------
     DLO1_df = clean_columns(DLO1_df)
     DLO2_df = clean_columns(DLO2_df)
     DLO3_df = clean_columns(DLO3_df)
 
-
+    # ------------------------------------------------------------
+    # Filter main df
+    # ------------------------------------------------------------
     df = df[(~df['EXAM2'].str.contains(r'\+', na=False)) & (df['ROLLNO'].isin(prn_set))]
-    if not DLO1_df.empty:
-        DLO1_df = DLO1_df[(DLO1_df['ROLLNO'].isin(prn_set))] # PRN dynamic karna hai
-    if not DLO2_df.empty:
-        DLO2_df = DLO2_df[(DLO2_df['ROLLNO'].isin(prn_set))]
-    if not DLO3_df.empty:
-        DLO3_df = DLO3_df[(DLO3_df['ROLLNO'].isin(prn_set))]
 
-    # if semester == 5 or semester == 6:  #IG we dont need this kyuki yeh function tabhi call hoga jab sem 5 or 6 hoga so blueprints bhi hata dena
+    # ------------------------------------------------------------
+    # Filter DLO dfs by PRN
+    # ------------------------------------------------------------
+    for d in [DLO1_df, DLO2_df, DLO3_df]:
+        if not d.empty:
+            d.drop(d[~d['ROLLNO'].isin(prn_set)].index, inplace=True)
+
+    # ------------------------------------------------------------
+    # DLO teacher mapping
+    # ------------------------------------------------------------
     teacher1_DLO_name = teachers_div1[5]['name']
     teacher1_DLO_subject = subjects[5]['subject']
+
     teacher2_DLO_name = teachers_div1[6]['name']
     teacher2_DLO_subject = subjects[6]['subject']
+
     teacher3_DLO_name = teachers_div1[7]['name']
     teacher3_DLO_subject = subjects[7]['subject']
-    new_df.loc[teacher1_subject] = analyze_grade(df, 'GRADE1')
-    new_df.loc[teacher2_subject] = analyze_grade(df, 'GRADE4')
-    new_df.loc[teacher3_subject] = analyze_grade(df, 'GRADE7')
-    new_df.loc[teacher4_subject] = analyze_grade(df, 'GRADE10')
-    new_df.loc[teacher1_DLO_subject] = analyze_DLO_grade(df, DLO1_df,'GRADE13')
-    new_df.loc[teacher2_DLO_subject] = analyze_DLO_grade(df, DLO2_df,'GRADE13')
-    new_df.loc[teacher3_DLO_subject] = analyze_DLO_grade(df, DLO3_df,'GRADE13')
+
+    # ------------------------------------------------------------
+    # BUILD ROWS FIRST (NO ROW-WISE .loc ASSIGNMENT)
+    # ------------------------------------------------------------
+    rows = {}
+    faculty = []
+
+    rows[teacher1_subject] = analyze_grade(df, 'GRADE1')
+    faculty.append(teacher1_name)
+
+    rows[teacher2_subject] = analyze_grade(df, 'GRADE4')
+    faculty.append(teacher2_name)
+
+    rows[teacher3_subject] = analyze_grade(df, 'GRADE7')
+    faculty.append(teacher3_name)
+
+    rows[teacher4_subject] = analyze_grade(df, 'GRADE10')
+    faculty.append(teacher4_name)
+
+    rows[teacher1_DLO_subject] = analyze_DLO_grade(df, DLO1_df, 'GRADE13')
+    faculty.append(teacher1_DLO_name)
+
+    rows[teacher2_DLO_subject] = analyze_DLO_grade(df, DLO2_df, 'GRADE13')
+    faculty.append(teacher2_DLO_name)
+
+    rows[teacher3_DLO_subject] = analyze_DLO_grade(df, DLO3_df, 'GRADE13')
+    faculty.append(teacher3_DLO_name)
+
+    # ------------------------------------------------------------
+    # CREATE DATAFRAME ONCE (NO WARNINGS)
+    # ------------------------------------------------------------
+    new_df = pd.DataFrame.from_dict(rows, orient='index')
     new_df.index.name = "Subject"
-    new_df.insert(0, 'Faculty',
-                      [teacher1_name, teacher2_name, teacher3_name, teacher4_name, teacher1_DLO_name,
-                       teacher2_DLO_name, teacher3_DLO_name])
+
+    # ------------------------------------------------------------
+    # Enforce dtypes (safe with NA)
+    # ------------------------------------------------------------
+    new_df = new_df.astype({
+        'E-P': 'Int64',
+        'D': 'Int64',
+        'C-O': 'Int64',
+        'TOTAL PASS': 'Int64',
+        'FAILED': 'Int64',
+        'No.of students appeared': 'Int64',
+        '% OF RESULT': 'float'
+    })
+
+    # ------------------------------------------------------------
+    # Insert Faculty column
+    # ------------------------------------------------------------
+    new_df.insert(0, 'Faculty', faculty)
+
     return new_df
-    # D division condition
-    # df['exam2'] = df['exam2'].apply(str)
-    # df = df[(~df['exam2'].str.contains(r'\+', na=False)) & (df['ROLLNO'] > '122A1070')]
-
-    # new_df['E-P'] = df.loc[(df['GRADE1'] == "E") | (df['GRADE1'] == "P"), ['GRADE1']].count()
-    # new_df['D'] = df.loc[(df['GRADE1'] == "D"), ['GRADE1']].count()
-    # new_df['C-O'] = df.loc[
-    #     (df['GRADE1'] == "O") | (df['GRADE1'] == "A") | (df['GRADE1'] == "B") | (df['GRADE1'] == "C"), [
-    #         'GRADE1']].count()
-    # new_df['TOTAL PASS'] = new_df['E-P'] + new_df['D'] + new_df['C-O']
-    # new_df['FAILED'] = df.loc[(df['GRADE1'] == "F"), ['GRADE1']].count()
-    # new_df['No.of students appeared'] = new_df['TOTAL PASS'] + new_df['FAILED']
-    # new_df['% OF RESULT'] = (new_df['TOTAL PASS'] / new_df['No.of students appeared'] * 100).round(2)
-
-    # This wont work
-    # new_df['E-P']=np.nan
-    # new_df['D']=np.nan
-    # new_df['C-O'] = np.nan
-    # new_df['TOTAL PASS'] = np.nan
-    # new_df['FAILED'] = np.nan
-    # new_df['No.of students appeared'] = np.nan
-    # new_df['% OF RESULT'] = np.nan
-
-
-

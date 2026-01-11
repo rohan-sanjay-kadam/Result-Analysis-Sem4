@@ -1,6 +1,6 @@
 import pandas as pd
 def list_all(df):
-    df.columns = df.columns.str.strip().str.upper()
+    df.columns = df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
 
     df['EXAMTOTAL'] = (
         df['EXAMTOTAL']

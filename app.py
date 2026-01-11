@@ -50,7 +50,7 @@ from ILO_analysis import routes_ILO
 from c_div import routes_c
 from d_div import routes_d
 # from c_and_d import routes_cd
-from firstapp.c_div_DLO import c_div_DLO_analysis
+from c_div_DLO import c_div_DLO_analysis
 from merge import routes_merging
 from merge import merg
 from merge_DLO import merg_DLO
@@ -130,7 +130,7 @@ def index():
 
             # Read and clean PRN list from the file
             df_prn = pd.read_excel(file)
-            df_prn.columns = df_prn.columns.str.strip().str.upper()
+            df_prn.columns = df_prn.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
             prn_list = df_prn['ROLLNO'].astype(str).str.strip().tolist()
 
             divisions_data.append({
@@ -281,7 +281,7 @@ def convert_excel():
         result_dictionary = {}
         for i in range(1, no_of_divisions + 1):
             # main table dataframe of first sheet
-            final_dataframes_dictionary[f"new{i}_df"] = c_div_DLO.c_div_DLO_analysis(df, i, DLO1_df, DLO2_df, DLO3_df, prns[f"DIV{i}-prn"])
+            final_dataframes_dictionary[f"new{i}_df"] = c_div_DLO_analysis(df, i, DLO1_df, DLO2_df, DLO3_df, prns[f"DIV{i}-prn"])
             # kt dataframe of first sheet
             kt_df_dictionary[f"kt_div{i}_df"], appeared_div_dictionary[f"appeared_div{i}"], pass_div_dictionary[f"pass_div{i}"] = count_kt_d.kt_analysis_d(df, prns[f"DIV{i}-prn"])
             # result of all divisions
@@ -315,8 +315,8 @@ def convert_excel():
             sheet2_curr.to_excel(writer, sheet_name="Comparison", index=False, startrow=9, startcol=1)
             sheet2_prev.to_excel(writer, sheet_name="Comparison", index=False, startrow=9, startcol=6)
             difference.to_excel(writer, sheet_name="Comparison", index=False, startrow=9, startcol=11)
-            sheet2_curr_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=23, startcol=1)
-            sheet2_prev_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=23, startcol=10)
+            sheet2_curr_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=24, startcol=1)
+            sheet2_prev_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=24, startcol=10)
 
             row = 3  # Start at row 3
 
@@ -720,8 +720,8 @@ def convert_excel():
             sheet2_curr.to_excel(writer, sheet_name="Comparison", index=False, startrow=9, startcol=1)
             sheet2_prev.to_excel(writer, sheet_name="Comparison", index=False, startrow=9, startcol=6)
             difference.to_excel(writer, sheet_name="Comparison", index=False, startrow=9, startcol=11)
-            sheet2_curr_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=23, startcol=1)
-            sheet2_prev_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=23, startcol=10)
+            sheet2_curr_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=24, startcol=1)
+            sheet2_prev_kt.to_excel(writer, sheet_name="Comparison", index=False, startrow=24, startcol=10)
 
 
             toppers.to_excel(writer, sheet_name="Toppers List",index=False,startrow=3)

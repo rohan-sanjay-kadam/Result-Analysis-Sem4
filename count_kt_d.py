@@ -1,6 +1,6 @@
 import pandas as pd
 def kt_analysis_d(df,prn_set):
-    df.columns = df.columns.str.strip().str.upper()
+    df.columns = df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
     # print(df.columns.tolist())
     df['EXAM2'] = df['EXAM2'].apply(str)
     df['ROLLNO'] = df['ROLLNO'].astype(str).str.strip()
@@ -10,8 +10,12 @@ def kt_analysis_d(df,prn_set):
     # No_of_students_appeared_div2=df[(df['Remark'] != 'NULL') & (df['Remark'] != 'ABS') ].shape[0]
     No_of_students_appeared_div2=df[df['REMARK'].notna()].shape[0]
     def count_kt(df, grade_columns):
-        df[grade_columns] = df[grade_columns].astype(str).applymap(str.strip) #applymap helps in applying function(like strip) to every single cell in dataframe
-        df[grade_columns] = df[grade_columns].applymap(str.upper)
+        df.loc[:, grade_columns] = (
+            df.loc[:, grade_columns]
+            .astype(str)
+            .apply(lambda col: col.str.strip().str.upper())
+        )
+
         kt_counts = [df[df[grade_columns].eq("F").sum(axis=1) == i].shape[0] for i in range(1, 6)]
         return kt_counts
 

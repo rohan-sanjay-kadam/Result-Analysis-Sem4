@@ -23,10 +23,10 @@ def d_div_DLO_analysis(df,DLO1_df,DLO2_df,DLO3_df):
     # semester = session.get('semester')
     prn_start = session.get('div2_prn_start')
     prn_end = session.get('div2_prn_end')
-    df.columns = df.columns.str.strip().str.upper()
-    DLO1_df.columns = DLO1_df.columns.str.strip().str.upper() #columns ke whitespaces hata tah but sirf end ke bich ke nhi
-    DLO2_df.columns = DLO2_df.columns.str.strip().str.upper() #like Roll No ka ROLL NO hi hoga so [No spaces allowed in column name]
-    DLO3_df.columns = DLO3_df.columns.str.strip().str.upper()
+    df.columns = df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
+    DLO1_df.columns = DLO1_df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
+    DLO2_df.columns = DLO2_df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
+    DLO3_df.columns = DLO3_df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
 
 
     df = df[(df['ROLLNO'] >= prn_start) & (df['ROLLNO'] <= prn_end)]

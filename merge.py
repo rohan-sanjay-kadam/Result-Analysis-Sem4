@@ -13,13 +13,20 @@ def merg(df):
     subjects=[sub[n]['subject'] for n in range(0,5)]
     grades = ["GRADE1", "GRADE4", "GRADE7", "GRADE10", "GRADE13"]
     internal_grades = ["GRADE2", "GRADE5", "GRADE8", "GRADE11", "GRADE14"]
-
+    pairs = [
+        ('GRADE1', 'GRADE2'),
+        ('GRADE4', 'GRADE5'),
+        ('GRADE7', 'GRADE8'),
+        ('GRADE10', 'GRADE11'),
+        ('GRADE13', 'GRADE14')
+    ]
     year=session.get("year")
     prev_year=f'{int(year.split("-")[0])-1}-{year.split("-")[0]}'
-    branch=session.get('branch').lower()
+    branch=session.get('branch').upper()
     sem=session.get('semester')
 
     print("Merge wala")
+    df.columns = df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
     print(df.columns.tolist())
     df=df[~(df['EXAM2'].str.contains(r'\+',na=False))&~(df['EXAMTOTAL'].isnull())]
     total_students=df.shape[0]
@@ -40,13 +47,17 @@ def merg(df):
         "Total": [x[3] for x in analysis]
 
     })
-    def count_kt(df, grade_columns,internal_grades):
-        kt_counts = [df[(((df[grade_columns]).eq("F"))|((df[internal_grades]).eq("F"))).sum(axis=1) == i].shape[0] for i in range(1, 6)]
 
-        return kt_counts
+    def count_kt(df, pairs):
+        kt_count = 0
+        for ext, inte in pairs:
+            kt_count += (df[ext].eq("F") | df[inte].eq("F"))
+
+        return [(kt_count == i).sum() for i in range(1, 6)]
+
     curr_failed=df[(df["REMARK"]=="F")].shape[0]
     curr_allclear=total_students-curr_failed
-    kt_analysis=count_kt(df,grades,internal_grades)
+    kt_analysis=count_kt(df,pairs)
     curr_kt_df= DataFrame({
         "Appeared": [total_students],
         "Failed": [curr_failed],
@@ -71,7 +82,8 @@ def merg(df):
             existing = GradeReport.query.filter_by(
                 academic_year=year,
                 semester=sem,
-                subject=subject
+                subject=subject,
+                branch=branch
             ).first()
 
             if existing:
@@ -96,6 +108,7 @@ def merg(df):
                     academic_year=year,
                     semester=sem,
                     subject=subject,
+                    branch=branch,
                     _40_49=row["40%-49%"],
                     _50_59=row["50%-59%"],
                     above_60=row["Above 60%"],
@@ -109,7 +122,8 @@ def merg(df):
         for index, rows in curr_kt_df.iterrows():
             existing = KtReport.query.filter_by(
                 academic_year=year,
-                semester=sem
+                semester=sem,
+                branch=branch
             ).first()
             if existing:
                 if (
@@ -136,7 +150,7 @@ def merg(df):
                 else:
                     print("No change for kt database")
             else:
-                kt_row = KtReport(academic_year=year, semester=sem, appeared=int(rows["Appeared"]),
+                kt_row = KtReport(academic_year=year, semester=sem,branch=branch, appeared=int(rows["Appeared"]),
                                   failed=int(rows["Failed"]), all_clear=int(rows["All Clear"]), kt1=int(rows["1KT"]),
                                   kt2=int(rows["2KT"]), kt3=int(rows["3KT"]), kt4=int(rows["4KT"]),
                                   kt5=int(rows["5KT"]))
@@ -146,10 +160,10 @@ def merg(df):
 
 
     #previous database se data lera
-    prev_data = GradeReport.query.filter_by(academic_year=prev_year,semester=sem).order_by(GradeReport.id).all()
+    prev_data = GradeReport.query.filter_by(academic_year=prev_year,semester=sem,branch=branch).order_by(GradeReport.id).all()
     # prev_data = GradeReport.query.filter_by(academic_year=prev_year,semester=sem).all()
 
-    prev_kt = KtReport.query.filter_by(academic_year=prev_year,semester=sem).first()
+    prev_kt = KtReport.query.filter_by(academic_year=prev_year,semester=sem,branch=branch).first()
     previous_data = []
     for row in prev_data:
         previous_data.append({

@@ -10,20 +10,19 @@ def analyze_DLO_grade(df,DLO_df, grade_column):
                 'No.of students appeared': None,
                 '% OF RESULT': None
             }
-        print("Unique grades before filtering:", df[grade_column].unique())
+        df.columns = df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
+        DLO_df.columns = DLO_df.columns.str.upper().str.replace(" ", "", regex=False).str.replace("_", "", regex=False)
         df[grade_column] = df[grade_column].astype(str).str.strip().str.upper()
-        df['ROLLNO'] = df['ROLLNO'].astype(str).str.strip() #Converts the rollno column to string and strips whitespaces
-        DLO_df['ROLLNO'] = DLO_df['ROLLNO'].astype(str).str.strip()
+        df.loc[:,'ROLLNO'] = df['ROLLNO'].astype(str).str.strip() #Converts the rollno column to string and strips whitespaces
+        DLO_df.loc[:,'ROLLNO'] = DLO_df['ROLLNO'].astype(str).str.strip()
         df = df[df[grade_column].isin(['E', 'P', 'D', 'C', 'B', 'A', 'O', 'F'])]
         df = df[df['ROLLNO'].isin(DLO_df['ROLLNO'])] # This only keeps the row where rollno matches
-        print("Unique grades after filtering:", df[grade_column].unique())
 
 
         # if DLO_df['ROLLNO'] == df['ROLLNO']:
         # filtered_df = df.loc[df[grade_column].isin(["E", "P"]), ["ROLLNO", "NAME", grade_column]]
         # print("E_P ke rows")
         filtered_df = df.loc[df[grade_column].isin(["O","A","B","C","E","P","D","F"]), ["ROLLNO", "NAME", grade_column]]
-        print(filtered_df)
 
         # E_P = df.loc[(df[grade_column] == "E") | (df[grade_column] == "P"), [grade_column]].shape[0]
         # .loc gives the data not just count means it will also give rows and columns ex below
@@ -41,19 +40,8 @@ def analyze_DLO_grade(df,DLO_df, grade_column):
         TOTAL_PASS = E_P + D + C_O
         FAILED = df.loc[df[grade_column] == "F", [grade_column]].shape[0]
         No_of_students = TOTAL_PASS + FAILED
-        print("Failed",FAILED)
-        print("Total Pass",TOTAL_PASS)
-        print("No of students",No_of_students)
-        missing_rollno = "121A1058"
 
-        # Filter rows with that rollno
-        filtered = df[df['ROLLNO'] == missing_rollno]
 
-        if not filtered.empty and grade_column in filtered.columns:
-            grade_value = filtered[grade_column].values[0]
-            print("Raw grade value:", repr(grade_value))
-        else:
-            print(f"ROLLNO {missing_rollno} not found in DataFrame or grade column missing.")
         percent_result = (TOTAL_PASS / No_of_students * 100)
 
         return {
