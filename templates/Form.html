@@ -218,6 +218,7 @@
             <button type="submit" class="btn btn-primary btn-lg px-4">
                 Next →
             </button>
+<!--            <input type="submit" />-->
         </div>
 
     </form>
@@ -294,7 +295,7 @@ function updateTeacherForm() {
         // PRN file input
         const prnDiv = document.createElement("div");
         prnDiv.className = "file-wrapper"
-        prnDiv.innerHTML = `<input type="file" name="division_file_${d}" accept=".xlsx,.xls"/>
+        prnDiv.innerHTML = `<input type="file" name="DIV${d}-PRN" accept=".xlsx,.xls"/>
         <div class="file-ui">
         <span>Upload PRN</span>
         <div>No file chosen</div>
